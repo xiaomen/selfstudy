@@ -1,0 +1,5 @@
+Jinja2==2.6
+MySQL-python==1.2.3
+lxml==2.3.3
+web.py==0.36
+wsgiref==0.1.2
