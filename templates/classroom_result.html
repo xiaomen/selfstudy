@@ -1,0 +1,20 @@
+<html>
+<head>
+<title>校门口 - 自习室</title>
+</head>
+
+<body>
+	<h3>{{ classroom.name }}</h3>
+	<dl>
+	{% for i in free_list %}
+	{% if i['time_list']|length > 0 %}
+		<dt>周{{ i['weekday'] }}</dt>
+		{% for time in i['time_list'] %}
+		<dl>{{ time }}</dl>
+		{% endfor %}
+	{% endif %}
+	{% endfor %}
+	</dl>
+	<a href="/{{ university }}/buildings">返回教学楼列表</a>
+</body>
+</html>

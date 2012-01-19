@@ -1,0 +1,18 @@
+<html>
+<head>
+<title>校门口 - 自习室</title>
+</head>
+
+<body>
+	<dl>
+		{% for building in buildings %}
+		<dt>{{ building.name }}</dt>
+			{% for cr in class_dict[building.building_no] %}
+				<dd>{{ cr.name }}</dd>
+				{%- if loop.index == 3 %}{% break %}{% endif %}
+			{%- endfor %}
+			<dd><a href="/{{ university }}/building/{{ building.building_no }}{% if date_str|length > 0 %}/{{ date_str }}/{{ class_str }} {% endif %}">更多</a></dd>
+		{% endfor %}
+	</dl>
+</body>
+</html>

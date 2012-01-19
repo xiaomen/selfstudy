@@ -1,0 +1,16 @@
+<html>
+<head>
+<title>校门口 - 自习室</title>
+</head>
+
+<body>
+	<h3></h3>
+	<dl>
+		<dt>{{ building.name }}</dt>
+			{% for cr in class_list %}
+				<dd>{{ cr.name }}</dd>
+			{%- endfor %}
+	</dl>
+	<a href="/{{ university }}/buildings{% if date_str|length > 0 %}/{{ date_str }}/{{ class_str }} {% endif %}">返回教学楼列表</a>
+</body>
+</html>
