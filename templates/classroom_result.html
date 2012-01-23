@@ -8,7 +8,7 @@
 	<dl>
 	{% for i in free_list %}
 	{% if i['time_list']|length > 0 %}
-		<dt>周{{ i['weekday'] }}</dt>
+		<dt>周{{ i.time.isoweekday() }}</dt>
 		{% for time in i['time_list'] %}
 		<dl>{{ time }}</dl>
 		{% endfor %}

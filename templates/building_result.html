@@ -7,7 +7,7 @@
 	<h3></h3>
 	<dl>
 		<dt>{{ building.name }}</dt>
-			{% for cr in class_list %}
+			{% for cr in building['free_list'] %}
 				<dd>{{ cr.name }}</dd>
 			{%- endfor %}
 	</dl>

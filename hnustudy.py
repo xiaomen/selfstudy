@@ -74,13 +74,15 @@ class HnuJiaoWu(object):
         c.close()
 
     def get_school_calendar(self):
-        result = self.opener.open(self.domain + 'jiaowu/jxjh/jxrl.do?method=showJxrlAction&xnxqh=' + self.semester)
+        url = 'jiaowu/jxjh/jxrl.do?method=showJxrlAction&xnxqh='
+        result = self.opener.open(self.domain + url + self.semester)
         s = result.read()
         doc = lxml.html.fromstring(s)
         table = doc.findall('.//body/table')[1]
         year = string.atoi(self.semester.split('-')[0])
         pre_date = datetime.date(year, 1, 1)
-        insert_sql = """INSERT INTO School_Calendar(week_no, start_date, university)
+        insert_sql = """INSERT INTO 
+                     School_Calendar(week_no, start_date, university)
                      VALUES (%s, %s, %s)"""
         data_array = []
         for tr in table.xpath('tr'):
@@ -154,7 +156,8 @@ class HnuJiaoWu(object):
                 'xnxqh': self.semester,
                 'jsbh': classroom_no,
                 'rxnf': ''}
-        req = urllib2.Request(self.domain + 'jiaowu/tkgl/tkgl.do?method=queryKbByJs&type=1', urllib.urlencode(params))
+        url = 'jiaowu/tkgl/tkgl.do?method=queryKbByJs&type=1'
+        req = urllib2.Request(self.domain + url, urllib.urlencode(params))
         where1 = self.opener.open(req).read()
         params = {'where1': where1,
                 'isOuterJoin': 'false',
