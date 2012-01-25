@@ -1,20 +1,32 @@
-<html>
-<head>
-<title>校门口 - 自习室</title>
-</head>
+{% extends "layout.html" %}
 
-<body>
-	<h3>{{ classroom.name }}</h3>
-	<dl>
-	{% for i in free_list %}
-	{% if i['time_list']|length > 0 %}
-		<dt>周{{ i.time.isoweekday() }}</dt>
-		{% for time in i['time_list'] %}
-		<dl>{{ time }}</dl>
+{% block title %}
+校门口 - 自习室
+{% endblock %}
+
+{% block nav %}
+	<li><a href="http://xiaomen.co">首页</a></li>
+	<li><a href="http://library.xiaom.co">图书馆</a></li>
+	<li class="select"><a href="http://selfstudy.xiaom.co">自习室</a></li>
+{% endblock %}
+
+{% block content %}
+	<ul id="time_nav" class="clearfix">
+		<li style="border-right: 1px solid #e3eef8;">当前时段自习室</li>
+		<li><a href="/{{ university }}">其他时段自习室</a></li>
+	</ul>
+	<div class="content">
+		<p>{{ building.name }}，{{ classroom.name }}, CurrentTime: {{ now_date }}</p>
+		{% for i in free_list %}
+			{% if i['time_list']|length > 0 %}
+			<dl class="clearfix">
+				<dt>周{{ i.time.isoweekday() }}</dt>
+				{% for time in i['time_list'] %}
+				<dd>{{ time }} </dd>
+				{% endfor %}
+			</dl>
+			{% endif %}
 		{% endfor %}
-	{% endif %}
-	{% endfor %}
-	</dl>
-	<a href="/{{ university }}/buildings">返回教学楼列表</a>
-</body>
-</html>
+		<a href="/{{ university }}/buildings">返回教学楼列表</a>
+	</div>
+{% endblock %}

@@ -152,7 +152,10 @@ def get_buildings(university, date, class_no):
                 week,
                 day,
                 class_no)
-        building['free_list'] = class_list
+        if len(class_list) > 3:
+            building['free_list'] = class_list[0:3]
+        else:
+            building['free_list'] = class_list
         ret_buildings.append(building)
     return ret_buildings
 
@@ -174,8 +177,15 @@ def get_classroom_info(classroom_no):
     classroom = db.select('Classroom',
             dict(classroom=classroom_no),
             where='room_no=$classroom')
-    return classroom
+    return classroom[0]
 
+def split_str(s):
+    ret = []
+    if s != None:
+        while len(s) > 0:
+            ret.append(s[0:2])
+            s = s[2:]
+    return ret
 def get_class_free_time_of_day(classroom_no, week, day, class_time_list):
     where_sql = """classroom=$classroom and
                    start_week_no<=$week and $week<=end_week_no and
@@ -195,24 +205,65 @@ def get_class_free_time_of_day(classroom_no, week, day, class_time_list):
         find = False
         f_time = '{0:02}'.format(time)
         for occupy_time in occupy_list:
-            if occupy_time.find(f_time) % 2 == 0:
+            o_list = split_str(occupy_time)
+            if f_time in o_list:
                 find = True
                 break
         if not find:
             free_list.append(time)
     return free_list
  
+def merge_time(time_list, assembling):
+    ret_list = []
+    time_set = set(time_list)
+    for i in assembling:
+        s = set(range(i.start_no, i.end_no + 1))
+        if s <= time_set:
+            ret_list.append(i.display)
+        elif not time_set.isdisjoint(s):
+            ret_list.extend(list(time_set & s))
+    return ret_list
+
 def get_classroom_free_time(university, classroom_no, date):
     rows = db.select('Class_Time',
             dict(uni=university),
             where='university=$uni')
     class_time_list = [x.class_no for x in list(rows)]
+    rows = db.select('Class_Time_Assembling',
+            dict(uni=university),
+            where='university=$uni')
+    class_time_assembling = list(rows)
     free_list = []
     for i in range(0, 7):
         time = date + datetime.timedelta(days=i)
-        week = get_calendar_info(university, time)
-        day = time.isoweekday()
-        time_list = get_class_free_time_of_day(classroom_no, week, day, class_time_list)
+        time_list = get_class_free_time_of_day(classroom_no,
+                get_calendar_info(university, time),
+                time.isoweekday(),
+                class_time_list)
+        time_list = merge_time(time_list, class_time_assembling)
         free_list.append(dict(time=time, time_list=time_list))
     return free_list
+
+def get_time_value(start, end):
+    ret = ''
+    for i in range(start, end + 1):
+        ret += '{0:02}'.format(i)
+    return ret
+
+def get_time_list(university):
+    rows = db.select('Class_Time_Assembling',
+            dict(uni=university),
+            where='university=$uni',
+            order='start_no ASC')
+    return [dict(value=get_time_value(x.start_no, x.end_no), display=x.display)
+            for x in rows]
+
+def get_building_by_classroom(classroom_no):
+    rows = db.select(['Class_Building', 'Classroom'],
+            dict(classroom=classroom_no),
+            what="Class_Building.name as name",
+            where="""class_building=building_no and
+                     room_no=$classroom""")
+    return rows[0]
+
 
