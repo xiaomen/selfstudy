@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}
+校门口 - 自习室
+{% endblock %}
+
+{% block nav %}
+	<li><a href="http://xiaomen.co">首页</a></li>
+	<li><a href="http://library.xiaom.co">图书馆</a></li>
+	<li class="select"><a href="http://selfstudy.xiaom.co">自习室</a></li>
+{% endblock %}
+
+{% block content %}
+	<ul id="time_nav" class="clearfix">
+		<li style="border-right: 1px solid #e3eef8;" ><a href="/{{ university }}/buildings">当前时段自习室</a></li>
+		<li>其他时段自习室</li>
+	</ul>
+	<div class="content">
+		<p>请选择一天：</p>		
+		<ul class="clearfix">
+		{% for d in date_list %}
+			<li style="border-right: 1px solid #e3eef8;">
+			<a href="/{{ university }}/{{ d.date().isoformat() }}">周{{ d.isoweekday() }}</a>
+			</li>
+			{% if loop.index % 4 == 0 %}
+			</ul>
+			<ul class="clearfix">
+			{% endif %}
+		{% endfor %}
+		</ul>
+	</div>
+{% endblock %}
