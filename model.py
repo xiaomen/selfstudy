@@ -250,6 +250,11 @@ def get_time_value(start, end):
         ret += '{0:02}'.format(i)
     return ret
 
+def get_class_quantity(university):
+    rows = db.select('Class_Time', dict(uni=university),
+            what='max(class_no)', where='university=$uni')
+    return rows[0]
+
 def get_time_list(university):
     rows = db.select('Class_Time_Assembling',
             dict(uni=university),
@@ -266,4 +271,49 @@ def get_building_by_classroom(classroom_no):
                      room_no=$classroom""")
     return rows[0]
 
+def occupy_str_to_set(class_str):
+    if class_str == None:
+        return None
+    ret = set()
+    while len(class_str) > 0:
+        ret.add(string.atoi(class_str[0:2]))
+        class_str = class_str[2:]
+    return ret
+
+def get_building_data(university, building_no, date):
+    where_sql = """room_no=classroom and
+                   class_building=$building and
+                   start_week_no<=$week and $week<=end_week_no and
+                   day_no=$day and 
+                   (week_sign=1 or week_sign=
+                   (case $week%2 when 0 then 3
+                    else 2 end))"""
+    building = db.select('Class_Building',
+            dict(uni=university, bld=building_no, enabled=True),
+            where='university=$uni and building_no=$bld')[0]
+    building['class_quantity'] = get_class_quantity(university)['max(class_no)']
+    week = get_calendar_info(university, date)
+    day = date.isoweekday()
+
+    vars=dict(building=building_no,
+            week=week,
+            day=day)
+
+    rows = db.select('Classroom',vars,
+            where='class_building=$building')
+    class_list = list(rows)
+
+    rows = db.select(['Classroom', 'Class_Occupation'],
+            vars, where=where_sql)
+    occupy_list = list(rows)
+    for c in class_list:
+        s = set()
+        for occupy in occupy_list:
+            if c.room_no != occupy.room_no:
+                continue
+            s |= occupy_str_to_set(occupy.class_time)
+        c['occupy_list'] = list(s)
+    building['class_list'] = class_list
+    return building        
+   
 

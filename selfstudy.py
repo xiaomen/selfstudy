@@ -6,6 +6,7 @@ import random
 import re
 import web
 import os
+import json
 
 from sheep.api.statics import static_files
 from jinja2 import Environment, FileSystemLoader
@@ -15,6 +16,7 @@ import model
 urls = (
     '/(.*)/buildings', 'BuildingList',
     '/(.*)/buildings/(.*)/(.*)', 'BuildingList',
+    '/(.*)/building/(.*)/(.*).json', 'BuildingData', 
     '/(.*)/building/(.*)/(.*)/(.*)', 'Building', 
     '/(.*)/building/(.*)', 'Building', 
     '/(.*)/classroom/(.*)', 'Classroom',
@@ -54,10 +56,19 @@ class BuildingList:
                 date_str=date_str,
                 class_str=class_str)
 
+class BuildingData:
+    def GET(self, university, building_no, date_str=''):
+        if not model.is_university_exist(university):
+            return 'error'
+        if not model.is_building_exist(university, building_no):
+            return 'error'
+        date = model.generate_datetime(date_str)
+        building = model.get_building_data(university, building_no, date)
+        return json.dumps(building)
+
 class Building:
 
     def GET(self, university, building_no, date_str='', class_str=''):
-        self.db = web.database(dbn='mysql')
         
         if not model.is_university_exist(university):
             return 'error' #TODO
