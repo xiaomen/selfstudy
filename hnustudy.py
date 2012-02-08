@@ -120,15 +120,15 @@ class HnuJiaoWu(object):
             s = result.read()
             self.get_class_building_from_str(s)
 
-#        c = self.db.cursor()
-#        c.execute('DELETE FROM Class_Building')
-#        insert_sql = 'INSERT INTO Class_Building(university, name, building_no) VALUES(%s,%s,%s)'
-#        data_array = []
-#        for building in self.class_building_list:
-#            tup = (self.university, building['name'], building['No.'])
-#            data_array.append(tup)
-#        c.executemany(insert_sql, data_array)
-#        c.close()
+        c = self.db.cursor()
+        c.execute('DELETE FROM Class_Building')
+        insert_sql = 'INSERT INTO Class_Building(university, name, building_no) VALUES(%s,%s,%s)'
+        data_array = []
+        for building in self.class_building_list:
+            tup = (self.university.encode('utf-8'), building['name'].encode('utf-8'), building['No.'].encode('utf-8'))
+            data_array.append(tup)
+        c.executemany(insert_sql, data_array)
+        c.close()
  
     def get_classroom_list(self):
         for x in self.class_building_list:
@@ -140,15 +140,15 @@ class HnuJiaoWu(object):
                 s = s[:(len(s) - 1)]
             self.classroom_list.extend([{'building': x['No.'], 'No.': y.split('#')[0], 'name': y.split('#')[1]} for y in s.split(',')])
 
-#        c = self.db.cursor()
-#        c.execute('DELETE FROM Classroom')
-#        insert_sql = 'INSERT INTO Classroom(class_building,room_no,name) VALUES(%s,%s,%s)'
-#        data_array = []
-#        for cr in self.classroom_list:
-#            tup = (cr['building'], cr['No.'], cr['name'])
-#            data_array.append(tup)
-#        c.executemany(insert_sql, data_array)
-#        c.close()
+        c = self.db.cursor()
+        c.execute('DELETE FROM Classroom')
+        insert_sql = 'INSERT INTO Classroom(class_building,room_no,name) VALUES(%s,%s,%s)'
+        data_array = []
+        for cr in self.classroom_list:
+            tup = (cr['building'].encode('utf-8'), cr['No.'].encode('utf-8'), cr['name'].encode('utf-8'))
+            data_array.append(tup)
+        c.executemany(insert_sql, data_array)
+        c.close()
 
     def get_classroom_schedule(self, classroom_no):
         params = {'zc': '',
@@ -209,9 +209,9 @@ class HnuJiaoWu(object):
 
 
 client = HnuJiaoWu()
-client.setinfo('Gdyf', 'hd8821842', 'hnu', '2011-2012-1')
+client.setinfo('Gdyf', 'hd8821842', 'hnu', '2011-2012-2')
 client.login()
-#client.get_school_calendar()
+client.get_school_calendar()
 client.get_class_building_list()
 client.get_classroom_list()
 for classroom in client.classroom_list:

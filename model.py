@@ -9,9 +9,9 @@ db = web.database(dbn='mysql')
 def generate_datetime(date_str=''):
     ret_time = ''
     if date_str == '':
-        year = 2011
-        month = random.randint(9, 12)
-        day = random.randint(1,30)
+        year = 2012
+        month = random.randint(2, 6)
+        day = random.randint(1, 30)
         hour = random.randint(8, 21)
         minute = random.randint(0, 59)
         return datetime.datetime(year, month, day, hour, minute)
