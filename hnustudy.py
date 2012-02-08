@@ -79,7 +79,7 @@ class HnuJiaoWu(object):
         s = result.read()
         doc = lxml.html.fromstring(s)
         table = doc.findall('.//body/table')[1]
-        year = string.atoi(self.semester.split('-')[0])
+        year = 2012#string.atoi(self.semester.split('-')[0])
         pre_date = datetime.date(year, 1, 1)
         insert_sql = """INSERT INTO 
                      School_Calendar(week_no, start_date, university)
