@@ -69,9 +69,9 @@ class HnuJiaoWu(object):
                 urllib.urlencode(login_params))
         self.opener.open(self.domain + 'Logon.do?method=logonBySSO',
                 urllib.urlencode({}))
-        c = self.db.cursor()
-        c.execute('DELETE FROM Class_Occupation')
-        c.close()
+        #c = self.db.cursor()
+        #c.execute('DELETE FROM Class_Occupation')
+        #c.close()
 
     def get_school_calendar(self):
         url = 'jiaowu/jxjh/jxrl.do?method=showJxrlAction&xnxqh='
@@ -159,15 +159,17 @@ class HnuJiaoWu(object):
         url = 'jiaowu/tkgl/tkgl.do?method=queryKbByJs&type=1'
         req = urllib2.Request(self.domain + url, urllib.urlencode(params))
         where1 = self.opener.open(req).read()
+        print where1
         params = {'where1': where1,
                 'isOuterJoin': 'false',
                 'PageNum': ''}
-        c = self.db.cursor()
+        #c = self.db.cursor()
         page_num = 1
         while True:
             params['PageNum'] = str(page_num)
             req = urllib2.Request(self.domain + 'jiaowu/tkgl/tkgl.do?method=goListKbbysys', urllib.urlencode(params))
             return_str = self.opener.open(req).read()
+            print return_str
             doc = lxml.html.fromstring(return_str)
             table = doc.get_element_by_id('mxh')
             if len(table.xpath('tr')) == 0:
@@ -185,6 +187,7 @@ class HnuJiaoWu(object):
                 insert_sql = """INSERT INTO 
                     Class_Occupation(university,classroom,start_week_no,day_no,class_time,end_week_no,week_sign)
                     VALUES(%s,%s,%s,%s,%s,%s,%s)"""
+                print insert_sql
                 day_no = time[0]
                 class_time = time[1:]
                 data_array = []
@@ -194,13 +197,9 @@ class HnuJiaoWu(object):
                         end_week = week.split('-')[1]
                     tup = (self.university, classroom_no, start_week, day_no, class_time, end_week, sign)
                     data_array.append(tup)
-                try:
-                    c.executemany(insert_sql, data_array)
-                except:
-                    print classroom_no
-                    print data_array
+                #c.executemany(insert_sql, data_array)
             page_num += 1
-        c.close()
+        #c.close()
 
     def logout(self):
         self.db.commit()
@@ -211,10 +210,9 @@ class HnuJiaoWu(object):
 client = HnuJiaoWu()
 client.setinfo('Gdyf', 'hd8821842', 'hnu', '2011-2012-2')
 client.login()
-client.get_school_calendar()
-client.get_class_building_list()
-client.get_classroom_list()
-for classroom in client.classroom_list:
-    client.get_classroom_schedule(classroom['No.'])
+#client.get_school_calendar()
+#client.get_class_building_list()
+#client.get_classroom_list()
+#for classroom in client.classroom_list:
 client.logout()
 
