@@ -14,14 +14,7 @@ from jinja2 import Environment, FileSystemLoader
 import model
 
 urls = (
-    '/(.*)/buildings', 'BuildingList',
     '/(.*)/buildings/(.*)/(.*)', 'BuildingList',
-    '/(.*)/building/(.*)/(.*).json', 'BuildingData', 
-    '/(.*)/building/(.*)/(.*)/(.*)', 'Building', 
-    '/(.*)/building/(.*)', 'Building', 
-    '/(.*)/classroom/(.*)', 'Classroom',
-    '/(.*)/(.*)', 'TimeSelect',
-    '/(.*)', 'DateSelect',
     '/(.*)/', 'Redirect',
     )
 
