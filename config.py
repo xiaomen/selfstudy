@@ -6,7 +6,7 @@ from jinja2 import Environment, FileSystemLoader
 
 jinja_env = Environment(
     loader=FileSystemLoader(os.path.join(os.path.dirname(__file__),
-                            'views')),
+                            'app/views')),
     extensions=['jinja2.ext.loopcontrols'])
 jinja_env.globals.update({})
 jinja_env.filters['s_files'] = static_files

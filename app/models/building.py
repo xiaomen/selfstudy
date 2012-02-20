@@ -2,7 +2,7 @@ import web
 from config import db
 
 from app.models import calendar
-
+from app.models import filters
 from app.helpers import utils
 
 def get_building_by_id(university, building_no):

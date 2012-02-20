@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block title %}
+校门口 - 自习室
+{% endblock %}
+
+{% block nav %}
+	<li><a href="http://xiaomen.co">首页</a></li>
+	<li><a href="http://library.xiaomen.co">图书馆</a></li>
+	<li class="select"><a href="http://selfstudy.xiaomen.co/hnu">自习室</a></li>
+{% endblock %}
+
+{% block content %}
+	<div id="query_filter">
+	<ul id="date_nav" class="clearfix">
+		<li>日期:</li>
+		{% for d in dates %}
+		<li {% if not loop.last %}style="border-right: 1px solid #e3eef8;"{% endif %}>
+		{% if query_date == d %}
+			{{ date_names[loop.index0] }}
+		{% else %}
+		<a href="/{{university.short_name}}/buildings/{{d.isoformat()}}/{{query_class}}">{{ date_names[loop.index0] }}</a>
+		{% endif %}
+		</li>
+		{% endfor %}
+	</ul>
+
+	<ul id="date_nav" class="clearfix"> 
+		<li>时段:</li>	
+		{% for p in periods %}
+		<li {% if not loop.last %}style="border-right: 1px solid #e3eef8;"{% endif %}>
+		{% if query_class == p.value %}
+			{{ p.display }}
+		{% else %}
+			<a href="{{ p.value }}">{{ p.display }}</a>
+		{% endif %}
+		</li>
+		{% endfor %}
+	</ul>
+	<ul id="date_nav" class="clearfix">
+		<li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+		{% for c in classes %}
+		<li {% if not loop.last %}style="border-right: 1px solid #e3eef8;"{% endif %}>
+		{% if query_class == c.value %}
+			{{ c.display }}
+		{% else %}
+			<a href="{{ c.value }}">{{ c.display }}</a>
+		{% endif %}
+		</li>
+		{% endfor %}
+	</ul>
+	</div>
+
+	<div id="result">
+		当前以下教学楼有自习室：
+		<ul id="building_result" class="clearfix">
+		{% for building in buildings %}
+		<li {% if loop.index % 3 > 0 %} style="border-right: 1px solid #e3eef8;" {% endif %}>
+			{{ building.name }}({{ building.free_count }})
+			</li>
+			{% if loop.index % 3 == 0 %}
+		</ul>
+		<ul id="building_result" class="clearfix">
+			{% endif %}
+		{% endfor %}
+		<ul>
+	</div>
+{% endblock %}

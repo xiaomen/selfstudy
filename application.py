@@ -3,9 +3,12 @@ import app.controllers
 
 urls = ('/(.*)/', 'redirect',
         '/(.*)/buildings/(.*)/(.*)', 'app.controllers.action.buildings',
-        '/(.*)/classroom/(.*)/(.*)', 'app.controllers.action.room')
+        '/(.*)/building/(.*)/(.*)/(.*)', 'app.controllers.action.classbuilding',
+        '/(.*)/classroom/(.*)/(.*)', 'app.controllers.action.room',
+        '/(.*)', 'app.controllers.action.index')
 
 class redirect:
+
     def GET(self, path):
         web.seeother('/' + path)
 
