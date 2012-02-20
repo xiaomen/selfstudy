@@ -19,7 +19,7 @@
 		{% if query_date == d %}
 			{{ date_names[loop.index0] }}
 		{% else %}
-		<a href="/{{university.short_name}}/buildings/{{d.isoformat()}}/{{query_class}}">{{ date_names[loop.index0] }}</a>
+		<a href="/{{university.short_name}}/building/{{ building.building_no }}/{{d.isoformat()}}/{{query_class}}">{{ date_names[loop.index0] }}</a>
 		{% endif %}
 		</li>
 		{% endfor %}
@@ -52,17 +52,23 @@
 	</div>
 
 	<div id="result">
-		当前以下教学楼有自习室：
+		当前，{{ building.name }}以下教室可以自习：
 		<ul id="building_result" class="clearfix">
-		{% for building in buildings %}
-		<li {% if loop.index % 3 > 0 %} style="border-right: 1px solid #e3eef8;" {% endif %}>
-		<a href="/{{ university.short_name }}/building/{{ building.building_no }}/{{ query_date.isoformat() }}/{{ query_class }}">{{ building.name }}({{ building.free_count }})</a>
+		{% for c in building.free_list %}
+		<li {% if loop.index % 4 > 0 %} style="border-right: 1px solid #e3eef8;" {% endif %}>
+			{{ c.name }}
 		</li>
 		{% if loop.index % 3 == 0 %}
 		</ul>
 		<ul id="building_result" class="clearfix">
 		{% endif %}
 		{% endfor %}
-		<ul>
+		</ul>
+		<span class="content right_border">
+			<a href="/{{ university.short_name }}/buildings/{{ query_date.isoformat() }}/{{ query_class }}">返回</a>
+		</span>
+		<span class="content">
+			<a href="/{{ university.short_name }}">自习室首页</a>
+		</span>
 	</div>
 {% endblock %}

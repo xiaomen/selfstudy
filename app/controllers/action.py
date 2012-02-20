@@ -28,9 +28,21 @@ class classbuilding:
         uni = university.get_university_by_no(uni_param)
         date = utils.str2date(date_param)
         class_list = map(lambda x:int(x), class_param.split('-'))
-        bld = building.get_building_by_id(uni_param, building_no)
 
-        return list(building.get_free_classes(uni_param, bld, date, class_list))
+        bld = building.get_building_by_id(uni_param, building_no)
+        bld['free_list'] = list(building.get_free_classes(uni_param, bld, date, class_list))
+        allday = filters.get_allday_filter(uni_param)
+        periods = filters.get_period_filter_list(uni_param)
+        periods.insert(0, allday)
+
+        return jinja_env.get_template('building.html').render(university=uni,
+                query_date=date,
+                query_class=class_param,
+                dates=filters.get_select_date_list(3),
+                date_names=date_display_names,
+                periods=periods,
+                classes=filters.get_class_filter_list(uni_param),
+                building=bld)
 
 class buildings:
 

@@ -57,6 +57,10 @@ ul {
 	margin:5px 0 0 10px;
 }
 
+.right_border {
+	border-right: 1px solid #e3eef8;
+}
+
 #result {
 	font-size: 14px;
 	line-height: 24px;
