@@ -19,9 +19,9 @@ def get_free_time_of_day(university, classroom, date):
         db.select('occupations',
             vars=dict(uni=university, classroom=classroom.room_no,
                 week=week, day=day),
-            what='CAST(occupies as unsigned integer) as ocp',
+            what='occupies',
             where='''university=$uni and classroom=$classroom and
-                     week=$week and weekday=$day'''), 0).ocp
+                     week=$week and weekday=$day'''), 0).occupies
     return filter(lambda x: occupies & (1 << (x - 1)) == 0, range(1, 12))
 
 def get_interval_free_time(university, classroom, start_date, interval_len):
