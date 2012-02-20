@@ -37,13 +37,16 @@ def get_class_occupies(uni, classroom, date):
 def get_free_buildings_detail(uni, building, date):
     max_class_no = calendar.get_max_class_no(uni)
     def f(x):
-        occupies = get_class_occupies(uni, x, date)
-        x['occupy_list'] = utils.int2bitarray(occupies, max_class_no)
+        x['occupy_list'] = utils.int2bitarray(x['occupies'], max_class_no)
         return x
 
     week = calendar.get_calendar(uni, date).week_no
     day = date.isoweekday()
-    classrooms = classroom.get_classroom_of_building(building)
+    classrooms = list(db.select(['classrooms', 'occupations'],
+        vars=dict(bld=building.building_no, week=week, day=day),
+        what='room_no, name, class_building, occupies',
+        where='''classroom=room_no and class_building=$bld and
+                 week=$week and weekday=$day'''))
     return map(f, classrooms)
      
 def get_free_buildings(uni, date, class_list):
