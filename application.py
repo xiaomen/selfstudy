@@ -2,6 +2,8 @@ import web
 import app.controllers
 
 urls = ('/(.*)/', 'redirect',
+        '/(.*)/api/buildings.json', 'api.building.buildings',
+        '/(.*)/api/building/(.*)/(.*).json', 'api.building.classbuilding',
         '/(.*)/buildings/(.*)/(.*)', 'app.controllers.action.buildings',
         '/(.*)/building/(.*)/(.*)/(.*)', 'app.controllers.action.classbuilding',
         '/(.*)/classroom/(.*)', 'app.controllers.action.room',

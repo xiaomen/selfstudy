@@ -3,6 +3,7 @@ import web
 
 from datetime import date
 from datetime import timedelta
+from app.models import calendar
 
 from config import db
 
@@ -18,10 +19,8 @@ def get_class_assembling_list(university):
         where='university=$uni', order='start_no ASC'))
 
 def get_allday_filter(university):
-    allday = web.listget(db.select('classtimes',vars=dict(uni=university),
-        what='max(class_no) as maxno',
-        where='university=$uni'), 0)
-    class_list = [str(i) for i in range(1, allday.maxno + 1)]
+    max_class_no = calendar.get_max_class_no(university)
+    class_list = [str(i + 1) for i in range(max_class_no)]
     return dict(display=u'全天', value='-'.join(class_list))
 
 def get_period_filter_list(university):

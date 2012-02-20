@@ -11,6 +11,11 @@ def get_classroom_by_id(university, classroom_no):
         vars=dict(uni=university, no=classroom_no),
         where='room_no=$no'), 0)
 
+def get_classroom_of_building(building):
+    return list(db.select('classrooms',
+        vars=dict(bld=building.building_no),
+        where='class_building=$bld'))
+
 def get_free_time_of_day(university, classroom, date):
     week = calendar.get_calendar(university, date).week_no
     day = date.isoweekday()
@@ -30,4 +35,5 @@ def get_interval_free_time(university, classroom, start_date, interval_len):
         free_times = get_free_time_of_day(university, classroom, d)
         class_assembling = calendar.get_class_assembling(university)
         return dict(date=d, times=utils.merge_time(free_times, class_assembling))
+
     return map(f, range(interval_len))

@@ -7,6 +7,9 @@ def classlist2int(class_list):
     def add(x, y): return x + (1 << (y - 1))
     return reduce(add, class_list, 0)
 
+def int2bitarray(n, length):
+    return map(lambda x: n & (1 << x) != 0, range(length))
+
 def merge_time(time_list, assembling):
     ret_list = []
     time_set = set(time_list)
