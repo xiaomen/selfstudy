@@ -56,7 +56,7 @@
 		<ul id="building_result" class="clearfix">
 		{% for c in building.free_list %}
 		<li {% if loop.index % 4 > 0 %} style="border-right: 1px solid #e3eef8;" {% endif %}>
-			{{ c.name }}
+		<a href="/{{ university.short_name }}/classroom/{{ c.room_no }}?date={{ query_date.isoformat() }}&class={{ query_class }}">{{ c.name }}</a>
 		</li>
 		{% if loop.index % 3 == 0 %}
 		</ul>

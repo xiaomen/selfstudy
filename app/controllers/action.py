@@ -67,10 +67,18 @@ class buildings:
 
 class room:
 
-    def GET(self, uni_param, room_no, date_param):
+    def GET(self, uni_param, room_no):
+        data = web.input()
         uni = university.get_university_by_no(uni_param)
-        date = utils.str2date(date_param)
+        today = date.today()
         room = classroom.get_classroom_by_id(uni_param, room_no)
+        bld = building.get_building_by_id(uni_param, room['class_building'])
 
-        free_list = classroom.get_free_time_of_day(uni_param, room, date)
-        return free_list
+        free_list = classroom.get_interval_free_time(uni_param, room, today, 7)
+        room['free_list'] = free_list
+
+        return jinja_env.get_template('classroom.html').render(university=uni,
+                building=bld,
+                query_date=data['date'],
+                query_class=data['class'],
+                classroom=room)

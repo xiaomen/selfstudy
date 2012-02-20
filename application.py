@@ -4,7 +4,7 @@ import app.controllers
 urls = ('/(.*)/', 'redirect',
         '/(.*)/buildings/(.*)/(.*)', 'app.controllers.action.buildings',
         '/(.*)/building/(.*)/(.*)/(.*)', 'app.controllers.action.classbuilding',
-        '/(.*)/classroom/(.*)/(.*)', 'app.controllers.action.room',
+        '/(.*)/classroom/(.*)', 'app.controllers.action.room',
         '/(.*)', 'app.controllers.action.index')
 
 class redirect:
