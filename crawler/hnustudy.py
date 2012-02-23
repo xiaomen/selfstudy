@@ -105,7 +105,6 @@ class HnuJiaoWu(object):
         c.execute('DELETE FROM calendars')
         c.executemany(insert_sql, data_array)
         c.close()
-        #self.db.commit()
 
     def get_class_building_from_str(self, s):
         if s.endswith(','):
@@ -140,10 +139,11 @@ class HnuJiaoWu(object):
 
         c = self.db.cursor()
         c.execute('DELETE FROM classrooms')
-        insert_sql = 'INSERT INTO classrooms(class_building,room_no,name) VALUES(%s,%s,%s)'
+        insert_sql = 'INSERT INTO classrooms(class_building,room_no,name, capacity) VALUES(%s,%s,%s,%s)'
         data_array = []
         for cr in self.classroom_list:
-            tup = (cr['building'].encode('utf-8'), cr['No.'].encode('utf-8'), cr['name'].encode('utf-8'))
+            index = cr['name'].find('[')
+            tup = (cr['building'].encode('utf-8'), cr['No.'].encode('utf-8'), cr['name'][0:index].encode('utf-8'), cr['name'][index + 1 : -1])
             data_array.append(tup)
         c.executemany(insert_sql, data_array)
         c.close()
@@ -240,7 +240,7 @@ class HnuJiaoWu(object):
 client = HnuJiaoWu()
 client.setinfo('Gdyf', 'hd8821842', 'hnu', '2011-2012-2')
 client.login()
-client.get_school_calendar()
+#client.get_school_calendar()
 client.get_class_building_list()
 client.get_classroom_list()
 for classroom in client.classroom_list:
