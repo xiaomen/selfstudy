@@ -4,7 +4,9 @@ runtime: python
 api_version: 1
 
 handlers:
+- url: /favicon.ico
+  static_files: static/ali.png
 - url: /static/(.*)
   static_files: static/\1
 - url: /.*
-  wsgi_app: selfstudy:wsgi_app
+  wsgi_app: application:wsgi_app

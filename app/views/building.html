@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+
+{% block title %}
+校门口 - 自习室
+{% endblock %}
+
+{% block nav %}
+	<li><a href="http://xiaomen.co">首页</a></li>
+	<li><a href="http://library.xiaomen.co">图书馆</a></li>
+	<li class="select"><a href="http://selfstudy.xiaomen.co/hnu">自习室</a></li>
+{% endblock %}
+
+{% block content %}
+	<div id="query_filter">
+	<ul id="date_nav" class="clearfix">
+		<li>日期:</li>
+		{% for d in dates %}
+		<li {% if not loop.last %}style="border-right: 1px solid #e3eef8;"{% endif %}>
+		{% if query_date == d %}
+			{{ date_names[loop.index0] }}
+		{% else %}
+		<a href="/{{university.short_name}}/building/{{ building.building_no }}/{{d.isoformat()}}/{{query_class}}">{{ date_names[loop.index0] }}</a>
+		{% endif %}
+		</li>
+		{% endfor %}
+	</ul>
+
+	<ul id="date_nav" class="clearfix"> 
+		<li>时段:</li>	
+		{% for p in periods %}
+		<li {% if not loop.last %}style="border-right: 1px solid #e3eef8;"{% endif %}>
+		{% if query_class == p.value %}
+			{{ p.display }}
+		{% else %}
+			<a href="{{ p.value }}">{{ p.display }}</a>
+		{% endif %}
+		</li>
+		{% endfor %}
+	</ul>
+	<ul id="date_nav" class="clearfix">
+		<li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+		{% for c in classes %}
+		<li {% if not loop.last %}style="border-right: 1px solid #e3eef8;"{% endif %}>
+		{% if query_class == c.value %}
+			{{ c.display }}
+		{% else %}
+			<a href="{{ c.value }}">{{ c.display }}</a>
+		{% endif %}
+		</li>
+		{% endfor %}
+	</ul>
+	</div>
+
+	<div id="result">
+		当前，{{ building.name }}以下教室可以自习：
+		<ul id="building_result" class="clearfix">
+		{% for c in building.free_list %}
+		<li {% if loop.index % 4 > 0 %} style="border-right: 1px solid #e3eef8;" {% endif %}>
+		<a href="/{{ university.short_name }}/classroom/{{ c.room_no }}?date={{ query_date.isoformat() }}&class={{ query_class }}">{{ c.name }}</a>
+		</li>
+		{% if loop.index % 3 == 0 %}
+		</ul>
+		<ul id="building_result" class="clearfix">
+		{% endif %}
+		{% endfor %}
+		</ul>
+		<span class="content right_border">
+			<a href="/{{ university.short_name }}/buildings/{{ query_date.isoformat() }}/{{ query_class }}">返回</a>
+		</span>
+		<span class="content">
+			<a href="/{{ university.short_name }}">自习室首页</a>
+		</span>
+	</div>
+{% endblock %}

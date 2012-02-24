@@ -20,7 +20,6 @@ class HnuJiaoWu(object):
         self.class_region_list = ['00001', '00002', '00003']
         self.class_building_list = []
         self.classroom_list = []
-        self.calendar_list = []
         self.semester = ''
         self.operate = ''
         self.cookie_jar = cookielib.LWPCookieJar()
@@ -69,9 +68,9 @@ class HnuJiaoWu(object):
                 urllib.urlencode(login_params))
         self.opener.open(self.domain + 'Logon.do?method=logonBySSO',
                 urllib.urlencode({}))
-        #c = self.db.cursor()
-        #c.execute('DELETE FROM Class_Occupation')
-        #c.close()
+        c = self.db.cursor()
+        c.execute('DELETE from occupations')
+        c.close()
 
     def get_school_calendar(self):
         url = 'jiaowu/jxjh/jxrl.do?method=showJxrlAction&xnxqh='
@@ -79,11 +78,8 @@ class HnuJiaoWu(object):
         s = result.read()
         doc = lxml.html.fromstring(s)
         table = doc.findall('.//body/table')[1]
-        year = 2012#string.atoi(self.semester.split('-')[0])
+        year = 2012
         pre_date = datetime.date(year, 1, 1)
-        insert_sql = """INSERT INTO 
-                     School_Calendar(week_no, start_date, university)
-                     VALUES (%s, %s, %s)"""
         data_array = []
         for tr in table.xpath('tr'):
             td_list = tr.xpath('td')
@@ -98,13 +94,15 @@ class HnuJiaoWu(object):
                 year += 1
                 cur_date = datetime.date(year, cur_date.month, cur_date.day) 
             week = {'week_no': td_content_list[0], 'start_date': cur_date}
-            self.calendar_list.append(week)
             pre_date = cur_date
             dup = (td_content_list[0], cur_date.isoformat(), self.university)
             data_array.append(dup)
-        print data_array
+
         c = self.db.cursor()
-        c.execute('DELETE FROM School_Calendar')
+        insert_sql = """INSERT INTO 
+                     calendars(week_no, start_date, university)
+                     VALUES (%s, %s, %s)"""
+        c.execute('DELETE FROM calendars')
         c.executemany(insert_sql, data_array)
         c.close()
 
@@ -114,15 +112,14 @@ class HnuJiaoWu(object):
         self.class_building_list.extend([{'No.': x.split('#')[0], 'name': x.split('#')[1]} for x in s.split(',')])
 
     def get_class_building_list(self):
-
         for x in self.class_region_list:
             result = self.opener.open(self.domain + 'jiaowu/tkgl/tkgl.do?method=queryJxl&xqbh={0}'.format(x))
             s = result.read()
             self.get_class_building_from_str(s)
 
         c = self.db.cursor()
-        c.execute('DELETE FROM Class_Building')
-        insert_sql = 'INSERT INTO Class_Building(university, name, building_no) VALUES(%s,%s,%s)'
+        c.execute('DELETE FROM buildings')
+        insert_sql = 'INSERT INTO buildings(university, name, building_no) VALUES(%s,%s,%s)'
         data_array = []
         for building in self.class_building_list:
             tup = (self.university.encode('utf-8'), building['name'].encode('utf-8'), building['No.'].encode('utf-8'))
@@ -141,16 +138,35 @@ class HnuJiaoWu(object):
             self.classroom_list.extend([{'building': x['No.'], 'No.': y.split('#')[0], 'name': y.split('#')[1]} for y in s.split(',')])
 
         c = self.db.cursor()
-        c.execute('DELETE FROM Classroom')
-        insert_sql = 'INSERT INTO Classroom(class_building,room_no,name) VALUES(%s,%s,%s)'
+        c.execute('DELETE FROM classrooms')
+        insert_sql = 'INSERT INTO classrooms(class_building,room_no,name, capacity) VALUES(%s,%s,%s,%s)'
         data_array = []
         for cr in self.classroom_list:
-            tup = (cr['building'].encode('utf-8'), cr['No.'].encode('utf-8'), cr['name'].encode('utf-8'))
+            index = cr['name'].find('[')
+            tup = (cr['building'].encode('utf-8'), cr['No.'].encode('utf-8'), cr['name'][0:index].encode('utf-8'), cr['name'][index + 1 : -1])
             data_array.append(tup)
         c.executemany(insert_sql, data_array)
         c.close()
 
+    def initialize_schedule(self, classroom_no):
+        insert_sql = 'INSERT INTO occupations(university, classroom, week, weekday, occupies) values(%s,%s,%s,%s,%s)'
+        c = self.db.cursor()
+        c.execute('select max(week_no) from calendars')
+        row = c.fetchone()
+        data_array = []
+        for week in range(row[0]):
+            for weekday in range(7):
+                tup = (self.university, classroom_no, week + 1, weekday + 1, 0)
+                data_array.append(tup)
+        c.executemany(insert_sql, data_array)
+        c.close()
     def get_classroom_schedule(self, classroom_no):
+        print classroom_no
+        self.initialize_schedule(classroom_no)
+        data_array = []
+        update_sql = """UPDATE occupations SET
+                             occupies = occupies | %s
+                        where classroom=%s and week=%s and weekday=%s"""
         params = {'zc': '',
                 'ywkb': '1',
                 'xnxqh': self.semester,
@@ -159,17 +175,15 @@ class HnuJiaoWu(object):
         url = 'jiaowu/tkgl/tkgl.do?method=queryKbByJs&type=1'
         req = urllib2.Request(self.domain + url, urllib.urlencode(params))
         where1 = self.opener.open(req).read()
-        print where1
         params = {'where1': where1,
                 'isOuterJoin': 'false',
                 'PageNum': ''}
-        #c = self.db.cursor()
+        c = self.db.cursor()
         page_num = 1
         while True:
             params['PageNum'] = str(page_num)
             req = urllib2.Request(self.domain + 'jiaowu/tkgl/tkgl.do?method=goListKbbysys', urllib.urlencode(params))
             return_str = self.opener.open(req).read()
-            print return_str
             doc = lxml.html.fromstring(return_str)
             table = doc.get_element_by_id('mxh')
             if len(table.xpath('tr')) == 0:
@@ -184,22 +198,38 @@ class HnuJiaoWu(object):
                     continue
                 week_list = td_content_list[11].split(',')
                 sign = td_content_list[12]
-                insert_sql = """INSERT INTO 
-                    Class_Occupation(university,classroom,start_week_no,day_no,class_time,end_week_no,week_sign)
-                    VALUES(%s,%s,%s,%s,%s,%s,%s)"""
-                print insert_sql
                 day_no = time[0]
                 class_time = time[1:]
-                data_array = []
+                occupies_bits = self.classes2bits(class_time)
                 for week in week_list:
                     end_week = start_week = week.split('-')[0]
                     if week.find('-') >= 0:
                         end_week = week.split('-')[1]
-                    tup = (self.university, classroom_no, start_week, day_no, class_time, end_week, sign)
-                    data_array.append(tup)
-                #c.executemany(insert_sql, data_array)
+                    for i in self.get_week_list(int(start_week), int(end_week) + 1, sign):
+                        tup = (occupies_bits, classroom_no, i, int(day_no))
+                        data_array.append(tup)
+                        #c.execute(update_sql, tup)
             page_num += 1
-        #c.close()
+
+        c.executemany(update_sql, data_array)
+        c.close()
+
+    def get_week_list(self, start, end, sign):
+        if sign == '1':
+            f = lambda x: True
+        elif sign == '2':
+            f = lambda x: x % 2 != 0
+        else:
+            f = lambda x: x % 2 == 0
+        return filter(f, range(start, end))
+
+    def classes2bits(self, classes):
+        ret = 0
+        while len(classes) > 0:
+            no = int(classes[0:2]) - 1
+            ret |= (1 << no)
+            classes = classes[2:]
+        return ret
 
     def logout(self):
         self.db.commit()
@@ -211,8 +241,9 @@ client = HnuJiaoWu()
 client.setinfo('Gdyf', 'hd8821842', 'hnu', '2011-2012-2')
 client.login()
 #client.get_school_calendar()
-#client.get_class_building_list()
-#client.get_classroom_list()
-#for classroom in client.classroom_list:
+client.get_class_building_list()
+client.get_classroom_list()
+for classroom in client.classroom_list:
+    client.get_classroom_schedule(classroom['No.'])
 client.logout()
 
