@@ -1,21 +1,24 @@
-import web
-import app.controllers
+from flask import Flask
 
-urls = ('/(.*)/', 'redirect',
-        '/(.*)/api/buildings.json', 'api.building.buildings',
-        '/(.*)/api/building/(.*)/(.*).json', 'api.building.classbuilding',
-        '/(.*)/buildings/(.*)/(.*)', 'app.controllers.action.buildings',
-        '/(.*)/building/(.*)/(.*)/(.*)', 'app.controllers.action.classbuilding',
-        '/(.*)/classroom/(.*)', 'app.controllers.action.room',
-        '/(.*)', 'app.controllers.action.index')
+import config
+import utils
+from models import *
+from sheep.api.statics import static_files
 
-class redirect:
+app = Flask(__name__)
+app.config.update(
+    SQLALCHEMY_DATABASE_URI = config.DATABASE_URI,
+    SQLALCHEMY_POOL_SIZE = 1000
+)
+app.jinja_env.filters['s_files'] = static_files
 
-    def GET(self, path):
-        web.seeother('/' + path)
+init_db(app)
 
-app = web.application(urls, globals())
-wsgi_app = app.wsgifunc()
+@app.route('/')
+def hello():
+    return 'HelloWorld'
 
-if __name__ == "__main__":
-    app.run()
+@app.route('/<uni>/buildings/<date>/<classes>')
+def get_buildings(uni, date, classes):
+    date = utils.str2date(date_param)
+    classes = map(lambda x: int(x), classes.split('-'))
