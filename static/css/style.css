@@ -109,7 +109,9 @@ ul {
     font-weight: bold;
 }
 
-
+.right_border {
+	border-right: 2px solid #e3eef8;
+}
 
 #footer {
     border-top: 1px solid #f0f0f0;
