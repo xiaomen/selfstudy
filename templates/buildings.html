@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+
+{% block title %}
+校门口 - 自习室
+{% endblock %}
+
+{% block content %}
+	<div id="query_filter">
+	<ul id="date_nav" class="clearfix">
+		<li>日期:</li>
+		{% for d in dates %}
+		<li {% if not loop.last %}class="right_border"{% endif %}>
+		{% if query_date == d[0] %}
+			{{ d[1] }}
+		{% else %}
+		<a href="/{{university.no}}/buildings/{{d[0].isoformat()}}/{{query_class}}">{{ d[1] }}</a>
+		{% endif %}
+		</li>
+		{% endfor %}
+	</ul>
+	<ul id="date_nav" class="clearfix"> 
+		<li>时段:</li>	
+		{% for p in periods %}
+		{% if loop.index0 == 4 %}{% break %}{% endif %}
+		<li {% if loop.index < 4 %}class="right_border"{% endif %}>
+		{% if query_class == p.query_string() %}
+			{{ p.name }}
+		{% else %}
+			<a href="{{ p.query_string() }}">{{ p.name }}</a>
+		{% endif %}
+		</li>
+		{% endfor %}
+	</ul>
+	<ul id="date_nav" class="clearfix">
+		<li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+		{% for p in periods %}
+		{% if loop.index <= 4 %}{% continue %}{% endif %}
+		<li {% if not loop.last %}class="right_border"{% endif %}>
+		{% if query_class == p.query_string() %}
+			{{ p.name }}
+		{% else %}
+			<a href="{{ p.query_string() }}">{{ p.name }}</a>
+		{% endif %}
+		</li>
+		{% endfor %}
+	</ul>
+	</div>
+
+	<div id="result">
+		<p>以下教学楼有自习室：</p>
+
+		{% for campus in university.campuses %}
+		{% if university.campuses|length > 1 %}
+
+		{{ campus.name }}:
+		{% endif %}
+		<ul id="building_result" class="clearfix">
+		{% for building in campus.buildings %}
+		<li {% if loop.index % 2 > 0 %}class="right_border"{% endif %}>
+		<a href="/{{ university.no}}/building/{{ building.no }}/{{ query_date.isoformat() }}/{{ query_class }}">{{ building.name }}({{ count[building.id] }})</a>
+		</li>
+		{% if loop.index % 2 == 0 %}
+		</ul>
+		<ul id="building_result" class="clearfix">
+		{% endif %}
+		{% endfor %}
+		</ul>
+		{% endfor %}
+	</div>
+{% endblock %}

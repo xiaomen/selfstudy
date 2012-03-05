@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block title %}
+校门口 - 自习室
+{% endblock %}
+
+{% block content %}
+	<div id="result">
+		{{ classroom.building.name }}, {{ classroom.name }}，以下时段可以自习：
+		{% for o in occupations%}
+
+		<ul id="building_result" class="clearfix">
+			<li>{{ o[1] }}: </li>
+			{% for t in o[2] %}
+			<li>{{ t }}</li>
+			{% endfor %}
+		</ul>
+		{% endfor %}
+		<span class="content right_border">
+			<a href="/{{ university.no }}/buildings/{{ query_date }}/{{ query_class }}">返回</a>
+		</span>
+		<span class="content">
+			<a href="/{{ university.no }}">自习室首页</a>
+		</span>
+	</div>
+{% endblock %}
