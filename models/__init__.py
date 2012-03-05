@@ -56,6 +56,9 @@ class Building(db.Model):
         self.enabled = enabled
         self.seq = seq
 
+    def to_json_obj(self):
+        return dict(name=self.name, building_no=self.no)
+
 class Campus(db.Model):
     __tablename__ = 'campuses'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

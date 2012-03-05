@@ -139,7 +139,7 @@ def get_classroom(uni, clr):
 @app.route('/selfstudy/api/<uni>/building/<bld>/<date>')
 @university_validate
 @date_validate
-def api_get_building(uni, bld, date):
+def api_query_building(uni, bld, date):
     date = utils.str2date(date)
 
     building = db.session.query(Building).filter(Building.no == bld).first()
@@ -160,3 +160,7 @@ def api_get_building(uni, bld, date):
         obj['class_list'].append(classroom)
     return json.dumps(obj)
 
+@app.route('/selfstudy/api/<uni>/buildings')
+@university_validate
+def api_get_building_list(uni):
+    return json.dumps([x.to_json_obj() for x in uni.buildings])
