@@ -69,10 +69,93 @@ def get_buildings(uni, date, classes):
     for b in uni.buildings:
         count[b.id] = len(filter(lambda x: x.building_id == b.id, free_classrooms))
 
-    return dict(university = uni,
+    return dict(university=uni,
             dates=utils.get_date_filters(),
             query_date=date,
             query_class=classes,
             periods = uni.periods,
             count=count)
+
+@app.route('/<uni>/building/<bld>/<date>/<classes>')
+@university_validate
+@date_validate
+@classes_validate
+@templated('building.html')
+def get_building(uni, bld, date, classes):
+    date = utils.str2date(date)
+    occupies = utils.classlist2int(map(lambda x: int(x), classes.split('-')))
+    
+    building = db.session.query(Building).filter(Building.no == bld).first()
+    if building is None:
+        abort(404)
+
+    occupations = db.session.query(Classroom.id).\
+            filter(Classroom.building_id == building.id).\
+            join(Occupation).\
+            filter(Occupation.date == date).\
+            filter('occupies & %d <> 0' % occupies,)
+    free_classrooms = db.session.query(Classroom).\
+            filter(Classroom.building_id==building.id).\
+            filter(~Classroom.id.in_(occupations)).all()
+
+    return dict(university=uni,
+            dates=utils.get_date_filters(),
+            query_date=date,
+            query_class=classes,
+            periods=uni.periods,
+            building=building,
+            classrooms=free_classrooms)
+
+@app.route('/<uni>/classroom/<clr>')
+@university_validate
+@templated('classroom.html')
+def get_classroom(uni, clr):
+
+
+    classroom = db.session.query(Classroom).\
+            filter(Classroom.no == clr).first()
+    if classroom is None:
+        abort(404)
+    dates = utils.get_interval_date(7)
+    q = db.session.query(Occupation).\
+            filter(Occupation.classroom_id==classroom.id)
+    occupations = []
+    for d in dates:
+        result = q.filter(Occupation.date==d[0]).first()
+        if result is None:
+            occupies = 0
+        else:
+            occupies = result.occupies
+        occupations.append((d[0], d[1],
+                            utils.int2classes(occupies, uni.class_quantity)))
+
+    return dict(university=uni,
+            classroom=classroom,
+            query_date=request.args.get('date', ''),
+            query_class=request.args.get('class', ''),
+            occupations=occupations)
+
+@app.route('/selfstudy/api/<uni>/building/<bld>/<date>')
+@university_validate
+@date_validate
+def api_get_building(uni, bld, date):
+    date = utils.str2date(date)
+
+    building = db.session.query(Building).filter(Building.no == bld).first()
+    if building is None:
+        abort(404)
+
+    stmt = db.session.query(Occupation.classroom_id, Occupation.occupies).\
+            filter(Occupation.date == date).subquery()
+    q = db.session.query(Classroom, stmt.c.occupies).\
+            outerjoin(stmt, Classroom.id==stmt.c.classroom_id).\
+            filter(Classroom.building_id == building.id)
+    obj = dict(class_list=[], class_quantity=uni.class_quantity)
+    for c, o in q:
+        ocp = 0 if o is None else o
+        classroom = dict(occupies=ocp,
+                occupy_list=utils.int2bitarray(ocp, uni.class_quantity),
+                **(c.to_json_obj()))
+        obj['class_list'].append(classroom)
+    return json.dumps(obj)
 

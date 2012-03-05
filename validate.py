@@ -13,7 +13,6 @@ def university_validate(f):
     def decorated_function(*args, **kwargs):
         if 'uni' in kwargs:
             u = University.query.filter_by(no=kwargs['uni']).first()
-            print u
             if u == None:
                 abort(404)
             kwargs['uni'] = u

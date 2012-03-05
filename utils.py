@@ -2,6 +2,7 @@
 
 import datetime
 
+days = [u'一', u'二', u'三', u'四', u'五', u'六', u'日']
 def str2date(date_str):
     return datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
 
@@ -11,6 +12,10 @@ def classlist2int(class_list):
 
 def int2bitarray(n, length):
     return map(lambda x: n & (1 << x) != 0, range(length))
+
+def int2classes(occupies, length):
+    return filter(lambda x: occupies & (1 << (x - 1)) == 0,
+            range(1, length + 1))
 
 def get_select_date_list(length):
     today = datetime.date.today()
@@ -29,6 +34,11 @@ def merge_time(time_list, assembling):
 
 def get_date_filters():
     i = datetime.date.today().isoweekday() - 1
-    days = [u'一', u'二', u'三', u'四', u'五', u'六', u'日']
     names = [u'今天(周{0})'.format(days[i]), u'明天', u'后天']
     return zip(get_select_date_list(3), names)
+
+def get_interval_date(length):
+    dates = get_select_date_list(length)
+    names = map(lambda x: u'周{0}'.format(days[x.isoweekday() - 1]), dates)
+    names[0] = u'今天'
+    return zip(dates, names)

@@ -101,6 +101,11 @@ class Classroom(db.Model):
         self.capacity = capacity
         self.seq = seq
 
+    def to_json_obj(self):
+        return dict(class_building=self.building.no,
+                name=self.name,
+                room_no=self.no)
+
     def __repr__(self):
         return self.name
 
@@ -117,3 +122,5 @@ class Occupation(db.Model):
         self.classroom_id = classroom_id
         self.date = date
         self.occupies = occupies
+    def __repr__(self):
+        return '<Occupation {0} {1} {2}'.format(self.classroom_id, self.date, self.occupies)

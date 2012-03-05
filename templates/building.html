@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+
+{% block title %}
+校门口 - 自习室
+{% endblock %}
+
+{% block content %}
+	<div id="query_filter">
+	<ul id="date_nav" class="clearfix">
+		<li>日期:</li>
+		{% for d in dates %}
+		<li {% if not loop.last %}class="right_border"{% endif %}>
+		{% if query_date == d[0] %}
+			{{ d[1] }}
+		{% else %}
+		<a href="/{{university.no}}/buildings/{{d[0].isoformat()}}/{{query_class}}">{{ d[1] }}</a>
+		{% endif %}
+		</li>
+		{% endfor %}
+	</ul>
+	<ul id="date_nav" class="clearfix"> 
+		<li>时段:</li>	
+		{% for p in periods %}
+		{% if loop.index0 == 4 %}{% break %}{% endif %}
+		<li {% if loop.index < 4 %}class="right_border"{% endif %}>
+		{% if query_class == p.query_string() %}
+			{{ p.name }}
+		{% else %}
+			<a href="{{ p.query_string() }}">{{ p.name }}</a>
+		{% endif %}
+		</li>
+		{% endfor %}
+	</ul>
+	<ul id="date_nav" class="clearfix">
+		<li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+		{% for p in periods %}
+		{% if loop.index <= 4 %}{% continue %}{% endif %}
+		<li {% if not loop.last %}class="right_border"{% endif %}>
+		{% if query_class == p.query_string() %}
+			{{ p.name }}
+		{% else %}
+			<a href="{{ p.query_string() }}">{{ p.name }}</a>
+		{% endif %}
+		</li>
+		{% endfor %}
+	</ul>
+	</div>
+
+	<div id="result">
+		<p>{{ building.name }}以下教室可以自习：</p>
+		<ul id="building_result" class="clearfix">
+		{% for c in classrooms %}
+		<li {% if loop.index % 3 > 0 %}class="right_border"{% endif %}>
+		<a href="/{{ university.no }}/classroom/{{ c.no }}?date={{ query_date.isoformat()}}&class={{ query_class }}">{{ c.name }}</a>
+		</li>
+		{% if loop.index % 3 == 0 %}
+		</ul>
+		<ul id="building_result" class="clearfix">
+		{% endif %}
+		{% endfor %}
+		</ul>
+		<span class="content right_border">
+			<a href="/{{ university.no }}/buildings/{{ query_date.isoformat() }}/{{ query_class }}">返回</a>
+		</span>
+		<span class="content">
+			<a href="/{{ university.no }}">自习室首页</a>
+		</span>
+	</div>
+{% endblock %}
