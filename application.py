@@ -5,15 +5,15 @@ from flask import Flask, redirect, url_for,\
         abort, request, render_template
 from functools import wraps
 
-import config
 import utils
 from models import *
 from validate import *
 from sheep.api.statics import static_files
 
+DATABASE_URI = 'mysql://root:Pa$$w0rd@localhost:3306/selfstudy'
 app = Flask(__name__)
 app.config.update(
-    SQLALCHEMY_DATABASE_URI = config.DATABASE_URI,
+    SQLALCHEMY_DATABASE_URI = DATABASE_URI,
     SQLALCHEMY_POOL_SIZE = 1000
 )
 app.jinja_env.filters['s_files'] = static_files
