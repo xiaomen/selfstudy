@@ -91,7 +91,7 @@ def get_building(uni, bld, date, classes):
 
     occupations = db.session.query(Classroom.id).\
             filter(Classroom.building_id == building.id).\
-            join(Occupation).\
+            join(Occupation, Classroom.id == Occupation.classroom_id).\
             filter(Occupation.date == date).\
             filter('occupies & %d <> 0' % occupies,)
     free_classrooms = db.session.query(Classroom).\
