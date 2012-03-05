@@ -10,7 +10,8 @@ from models import *
 from validate import *
 from sheep.api.statics import static_files
 
-DATABASE_URI = 'mysql://root:Pa$$w0rd@localhost:3306/selfstudy'
+#DATABASE_URI = 'mysql://root:Pa$$w0rd@localhost:3306/selfstudy'
+DATABASE_URI = 'mysql://'
 app = Flask(__name__)
 app.config.update(
     SQLALCHEMY_DATABASE_URI = DATABASE_URI,
