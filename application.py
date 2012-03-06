@@ -109,17 +109,13 @@ def get_building(uni, bld, date, classes):
 
 @app.route('/<uni>/classroom/<clr>')
 @university_validate
+@classroom_validate
 @templated('classroom.html')
 def get_classroom(uni, clr):
 
-
-    classroom = db.session.query(Classroom).\
-            filter(Classroom.no == clr).first()
-    if classroom is None:
-        abort(404)
     dates = utils.get_interval_date(7)
     q = db.session.query(Occupation).\
-            filter(Occupation.classroom_id==classroom.id)
+            filter(Occupation.classroom_id==clr.id)
     occupations = []
     for d in dates:
         result = q.filter(Occupation.date==d[0]).first()
@@ -131,7 +127,7 @@ def get_classroom(uni, clr):
                             utils.int2classes(occupies, uni.class_quantity)))
 
     return dict(university=uni,
-            classroom=classroom,
+            classroom=clr,
             query_date=request.args.get('date', ''),
             query_class=request.args.get('class', ''),
             occupations=occupations)

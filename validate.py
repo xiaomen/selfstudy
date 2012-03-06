@@ -1,4 +1,5 @@
-__all__ = ['university_validate', 'date_validate', 'classes_validate']
+__all__ = ['university_validate', 'date_validate', 'classes_validate',
+           'classroom_validate']
 
 import datetime
 
@@ -41,4 +42,13 @@ def classes_validate(f):
         return f(*args, **kwargs)
     return decorated_function
 
-
+def classroom_validate(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'clr' in kwargs:
+            c = Classroom.query.filter_by(no=kwargs['clr']).first()
+            if c == None:
+                abort(404)
+            kwargs['clr'] = c
+        return f(*args, **kwargs)
+    return decorated_function
