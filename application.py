@@ -17,6 +17,7 @@ app.config.update(
     SQLALCHEMY_DATABASE_URI = DATABASE_URI,
     SQLALCHEMY_POOL_SIZE = 1000
 )
+
 app.jinja_env.filters['s_files'] = static_files
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')
 
@@ -154,6 +155,7 @@ def api_query_building(uni, bld, date):
                 occupy_list=utils.int2bitarray(ocp, uni.class_quantity),
                 **(c.to_json_obj()))
         obj['class_list'].append(classroom)
+
     return json.dumps(obj)
 
 @app.route('/selfstudy/api/<uni>/buildings')
