@@ -1,6 +1,6 @@
-syntax: glob
-
 venv
 permdir
 *.py[co]
 *.swp
+dev.yaml
+
