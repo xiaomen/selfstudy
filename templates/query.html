@@ -1,64 +1,6 @@
 {% extends "layout.html" %}
 
 {% block body %}
-{#<!--<table class="selfstudy-wrapper">
-    <tr>
-        <td class="leftbar">
-            <div class="select-form">
-                <div class="select-title">
-                    <h2>日期</h2>
-                </div>
-                <div class="select-body">
-                    <ul class="select-list">
-                        {% for d in dates %}
-                        <li {% if not loop.last %}class="right_border"{% endif %}>
-                        {% if query_date == d[0] %}
-                            {{ d[1] }}
-                        {% else %}
-                            <a href="/{{university.no}}/buildings/{{d[0].isoformat()}}/{{query_class}}">{{ d[1] }}</a>
-                        {% endif %}
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-            <div class="select-form">
-                <div class="select-title">
-                    <h2>时段</h2>
-                </div>
-                <div class="select-body">
-                    <ul class="select-list">
-                        {% for p in periods %}
-                        {% if loop.index == 4 %}{% break %}{% endif %}
-                        <li {% if loop.index < 4 %}class="right-border"{% endif %}>
-                        {% if query_class == p.query_string() %}
-                            {{ p.name }}
-                        {% else %}
-                            <a href="{{ p.query_string() }}">{{ p.name }}</a>
-                        {% endif %}
-                        </li>
-                        {% endfor %}
-                    </ul>
-                    <ul class="select-list">
-                        {% for p in periods %}
-                        {% if loop.index <= 4 %}{% continue %}{% endif %}
-                        <li {% if not loop.last %}class="right_border"{% endif %}>
-                        {% if query_class == p.query_string() %}
-                            {{ p.name }}
-                        {% else %}
-                            <a href="{{ p.query_string() }}">{{ p.name }}</a>
-                        {% endif %}
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        </td>
-        <td class="rightbar">
-            {% block result %}{% endblock %}
-        </td>
-    </tr>
-</table>--> #}
 <div class="query-wrapper">
     <div class="query-title">
         <h2>查询条件</h2>
