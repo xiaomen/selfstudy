@@ -113,7 +113,6 @@ def get_building(uni, bld, date, classes):
 @classroom_validate
 @templated('classroom.html')
 def get_classroom(uni, clr):
-
     dates = utils.get_interval_date(7)
     q = db.session.query(Occupation).\
             filter(Occupation.classroom_id==clr.id)
@@ -126,7 +125,6 @@ def get_classroom(uni, clr):
             occupies = result.occupies
         occupations.append((d[0], d[1],
                             utils.int2classes(occupies, uni.class_quantity)))
-
     return dict(university=uni,
             classroom=clr,
             query_date=request.args.get('date', ''),

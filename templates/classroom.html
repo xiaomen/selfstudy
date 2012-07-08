@@ -1,26 +1,55 @@
 {% extends "layout.html" %}
 
-{% block title %}
-校门口 - 自习室
+{% block breadcrumb %}
+<span><a href="/">校门口</a></span>
+<span class="sep"></span>
+<span><a href="/">自习室</a></span>
+<span class="sep"></span>
+<span><a href="/{{ university.no }}/building/{{ classroom.building.no }}/{{ query_date }}/{{ query_class }}">{{ classroom.building.name }}</a></span>
+<span class="sep"></span>
+<span>{{ classroom.name }}</span>
 {% endblock %}
 
-{% block content %}
-	<div id="result">
-		{{ classroom.building.name }}, {{ classroom.name }}，以下时段可以自习：
-		{% for o in occupations%}
+{% block body %}
+<!--<div class="result classroom-result">
+    <div class="result-title">
+        <h2>{{ classroom.building.name }}, {{ classroom.name }}，以下时段可以自习</h2>
+    </div>
+    <div class="result-body">
+        {% for o in occupations%}
+        <div class="result-campus">{{ o[1] }}</div>
+        <ul class="result-list">
+            {% for t in o[2] %}
+            <li>{{ t }}</li>
+            {% endfor %}
+        </ul>
+        {% endfor %}
+    </div>
+</div>-->
+<div class="result-calendar">
+    <table class="classroom-calendar">
+        <thead>
+            <tr>
+                <th class="lesson-number">&nbsp; </th>
+                {% for o in occupations %}
+                <th>{{ o[1] }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in range(1, 12) %}
+            <tr>
+                <td class="lesson-number">{{ i }}</td>
+                {% for o in occupations %}
+                <td {% if i not in o[2] %}class="nofree" title="有课"{% else %}title="可自习"{% endif %}>&nbsp;</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
-		<ul id="building_result" class="clearfix">
-			<li>{{ o[1] }}: </li>
-			{% for t in o[2] %}
-			<li>{{ t }}</li>
-			{% endfor %}
-		</ul>
-		{% endfor %}
-		<span class="content right_border">
-			<a href="/{{ university.no }}/buildings/{{ query_date }}/{{ query_class }}">返回</a>
-		</span>
-		<span class="content">
-			<a href="/{{ university.no }}">自习室首页</a>
-		</span>
-	</div>
+<div class="back-btn">
+    <a href="/{{ university.no }}/building/{{ classroom.building.no }}/{{ query_date }}/{{ query_class }}">« 返回</a>
+</div>
 {% endblock %}
