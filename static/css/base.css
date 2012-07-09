@@ -17,7 +17,7 @@ input:-moz-placeholder, textarea:-moz-placeholder {
 
 
 body {
-    background: url('/static/img/bg.png') #edeae2 repeat-x top left;
+    background: url('/selfstudy/static/img/bg.png') #edeae2 repeat-x top left;
     font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", STHeiti !important;
 }
 
