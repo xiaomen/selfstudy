@@ -42,7 +42,7 @@
 }
 
 .result-title, .query-title {
-    background: url('/static/img/before-title.png') no-repeat left center; 
+    background: url('/selfstudy/static/img/before-title.png') no-repeat left center; 
     padding-left: 50px; 
 }
 
