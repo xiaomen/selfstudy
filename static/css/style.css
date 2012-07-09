@@ -90,6 +90,7 @@
 
 .back-btn {
     margin-top: 20px; 
+    min-height: 40px; 
 }
 
 .back-btn a {
@@ -234,4 +235,13 @@
 
 .alert {
     border: 2px solid red !important; 
+}
+
+.query-control label {
+    margin-left: 30px; 
+}
+
+.legend {
+    float: right; 
+    display: inline-block; 
 }
