@@ -55,7 +55,6 @@ def index(uni, quantity=0):
 
 @app.route('/<uni>/buildings/<date>/<classes>')
 @university_validate
-@date_validate
 @classes_validate
 @templated('buildings.html')
 def get_buildings(uni, date, classes):
@@ -80,7 +79,6 @@ def get_buildings(uni, date, classes):
 
 @app.route('/<uni>/building/<bld>/<date>/<classes>')
 @university_validate
-@date_validate
 @classes_validate
 @templated('building.html')
 def get_building(uni, bld, date, classes):
@@ -133,7 +131,6 @@ def get_classroom(uni, clr):
 
 @app.route('/selfstudy/api/<uni>/building/<bld>/<date>')
 @university_validate
-@date_validate
 def api_query_building(uni, bld, date):
     date = utils.str2date(date)
 
