@@ -40,6 +40,10 @@ function oninputchanging() {
         date.addClass("alert"); 
         return false; 
     }
+    if((date_obj - now)/1000/60/60/24 > 365.00) {
+        date.addClass("alert"); 
+        return false; 
+    }
     url_array = window.location.href.split('/'); 
     url_array.pop(); 
     url_array.pop(); 
@@ -82,11 +86,8 @@ $(document).ready(function() {
             '<td data-lesson="9-10-11">'+
                 '晚上'+
             '</td>'+
-            '<td data-lesson="9-10">'+
-                '9-10'+
-            '</td>'+
-            '<td data-lesson="11">'+
-                '11'+
+            '<td data-lesson="9-10-11" colspan="2">'+
+                '9-10-11'+
             '</td>'+
         '</tr>'+
     '</tbody>'+
