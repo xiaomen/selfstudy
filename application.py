@@ -59,7 +59,9 @@ def index(uni, quantity=0):
 @classes_validate
 @templated('buildings.html')
 def get_buildings(uni, date, classes):
-    date = utils.str2date(date)
+    if date == None:
+        return redirect(url_for('index', uni='hnu'))
+
     occupies = utils.classlist2int(map(lambda x: int(x), classes.split('-')))
     
     occupations = db.session.query(Occupation.classroom_id).\
@@ -84,7 +86,8 @@ def get_buildings(uni, date, classes):
 @classes_validate
 @templated('building.html')
 def get_building(uni, bld, date, classes):
-    date = utils.str2date(date)
+    if date == None:
+        return redirect(url_for('index', uni='hnu'))
     occupies = utils.classlist2int(map(lambda x: int(x), classes.split('-')))
     
     building = db.session.query(Building).filter(Building.no == bld).first()
@@ -132,10 +135,11 @@ def get_classroom(uni, clr):
             occupations=occupations)
 
 @app.route('/selfstudy/api/<uni>/building/<bld>/<date>')
-@university_validate
 @date_validate
+@university_validate
 def api_query_building(uni, bld, date):
-    date = utils.str2date(date)
+    if date == None:
+        return redirect(url_for('index', uni='hnu'))
 
     building = db.session.query(Building).filter(Building.no == bld).first()
     if building is None:
