@@ -12,6 +12,12 @@ from sheep.api.statics import static_files
 
 #DATABASE_URI = 'mysql://root:Pa$$w0rd@localhost:3306/selfstudy'
 DATABASE_URI = 'mysql://'
+LESSON_FORMAT = {
+    '1-2-3-4-5-6-7-8-9-10-11' : u'全天', 
+    '1-2-3-4' : u'上午', 
+    '5-6-7-8' : u'下午', 
+    '9-10-11' : u'晚间'
+}
 app = Flask(__name__)
 app.config.update(
     SQLALCHEMY_DATABASE_URI = DATABASE_URI,
@@ -22,6 +28,17 @@ app.jinja_env.filters['s_files'] = static_files
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')
 
 init_db(app)
+
+@app.template_filter('format_date')
+def format_date(date):
+    year, month, day = str(date).split("-")
+    return u"%s年%s月%s日" % (year, month, day)
+
+@app.template_filter('format_class')
+def format_class(lesson):
+    if lesson in LESSON_FORMAT.keys():
+        return LESSON_FORMAT[lesson]
+    return u", ".join(lesson.split("-")) + u"节课"
 
 def templated(template=None):
     def decorator(f):
