@@ -11,21 +11,6 @@
 {% endblock %}
 
 {% block body %}
-<!--<div class="result classroom-result">
-    <div class="result-title">
-        <h2>{{ classroom.building.name }}, {{ classroom.name }}，以下时段可以自习</h2>
-    </div>
-    <div class="result-body">
-        {% for o in occupations%}
-        <div class="result-campus">{{ o[1] }}</div>
-        <ul class="result-list">
-            {% for t in o[2] %}
-            <li>{{ t }}</li>
-            {% endfor %}
-        </ul>
-        {% endfor %}
-    </div>
-</div>-->
 <div class="result-calendar">
     <table class="classroom-calendar">
         <thead>
@@ -48,7 +33,9 @@
         </tbody>
     </table>
 </div>
-
+<div class="legend">
+    <img src="{{ '/static/img/legend.png' | s_files }}"  height="76px" />
+</div>
 <div class="back-btn">
     <a href="/{{ university.no }}/building/{{ classroom.building.no }}/{{ query_date }}/{{ query_class }}">« 返回</a>
 </div>
