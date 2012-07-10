@@ -60,6 +60,7 @@ def templated(template=None):
 
 @app.route('/')
 def hello():
+    1/0
     return redirect(url_for('index', uni='hnu'))
 
 @app.route('/<uni>')
