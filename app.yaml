@@ -10,4 +10,4 @@ handlers:
 - url: /static/(.*)
   static_files: static/\1
 - url: /.*
-  wsgi_app: application:app
+  wsgi_app: app:app
