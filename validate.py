@@ -24,10 +24,14 @@ def date_validate(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if 'date' in kwargs:
-            today = datetime.date.today()
-            dates = map(lambda x: x.isoformat(), utils.get_select_date_list(3))
-            if not kwargs['date'] in dates:
-                abort(404)
+            try:
+                d = utils.str2date(kwargs['date'])
+                today = datetime.date.today()
+                if d < today or not d in utils.get_select_date_list(180):
+                    d = None
+                kwargs['date'] = d
+            except:
+                kwargs['date'] = None
         return f(*args, **kwargs)
     return decorated_function
 
