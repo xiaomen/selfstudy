@@ -104,6 +104,8 @@
 
 .classroom-calendar {
     width: 100%; 
+    border-collapse: separate;
+    border-spacing: 2px;
 }
 
 .classroom-calendar th, .classroom-calendar td {
@@ -112,23 +114,22 @@
 }
 
 .classroom-calendar td {
-    border: 1px solid #CCC; 
+    background-color: #99CCFF;
 }
 
 .classroom-calendar tr:hover td {
-    background-color: #FBFBFB; 
 }
 
-.lesson-number {
+td.lesson-number {
     width: 50px; 
     text-align: center; 
     vertical-align: center; 
     color: #888; 
+    background-color: white;
 }
 
 .nofree {
-    background-color: #EEE !important; 
-    border: 1px solid #AAA !important; 
+    background-color: #9F9F9F !important; 
 }
 
 .clearfix{*zoom:1;}.clearfix:before,.clearfix:after{display:table;content:"";}
@@ -242,6 +243,5 @@
 }
 
 .legend {
-    float: right; 
-    display: inline-block; 
+    text-align: left;
 }

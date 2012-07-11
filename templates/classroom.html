@@ -11,6 +11,9 @@
 {% endblock %}
 
 {% block body %}
+<div class="legend">
+    <img src="{{ '/static/img/legend.png' | s_files }}"  height="76px" />
+</div>
 <div class="result-calendar">
     <table class="classroom-calendar">
         <thead>
@@ -32,9 +35,6 @@
             {% endfor %}
         </tbody>
     </table>
-</div>
-<div class="legend">
-    <img src="{{ '/static/img/legend.png' | s_files }}"  height="76px" />
 </div>
 <div class="back-btn">
     <a href="/{{ university.no }}/building/{{ classroom.building.no }}/{{ query_date }}/{{ query_class }}">« 返回</a>
