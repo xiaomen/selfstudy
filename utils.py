@@ -49,7 +49,7 @@ def get_interval_date(length):
     return zip(dates, names)
 
 def get_user(uid):
-    url = 'http://open.xiaomen.co/api/people/' + uid
+    url = 'http://open.xiaomen.co/api/people/' + str(uid)
     req = urllib2.Request(url)
     req.add_header('X-APP-NAME', 'account')
     res = urllib2.urlopen(req, timeout=15)
