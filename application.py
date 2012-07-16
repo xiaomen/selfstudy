@@ -2,30 +2,44 @@
 import json
 import datetime
 from flask import Flask, redirect, url_for,\
-        abort, request, render_template
+        abort, request, render_template, g
 from functools import wraps
 
 import utils
+import config
+
 from models import *
 from validate import *
-from sheep.api.statics import static_files
 
-#DATABASE_URI = 'mysql://root:Pa$$w0rd@localhost:3306/selfstudy'
-DATABASE_URI = 'mysql://'
+from sheep.api.statics import static_files
+from sheep.api.sessions import SessionMiddleware, \
+    FilesystemSessionStore
+
 LESSON_FORMAT = {
     '1-2-3-4-5-6-7-8-9-10-11' : u'全天', 
     '1-2-3-4' : u'上午', 
     '5-6-7-8' : u'下午', 
     '9-10-11' : u'晚间'
 }
+
 app = Flask(__name__)
+app.debug = config.DEBUG
+
 app.config.update(
-    SQLALCHEMY_DATABASE_URI = DATABASE_URI,
-    SQLALCHEMY_POOL_SIZE = 1000
+    SQLALCHEMY_DATABASE_URI = config.DATABASE_URI,
+    SQLALCHEMY_POOL_SIZE = 1000,
+    SQLALCHEMY_POOL_TIMEOUT = 10,
+    SQLALCHEMY_POOL_RECYCLE = 3600,
+    SESSION_COOKIE_DOMAIN = config.SESSION_COOKIE_DOMAIN
 )
 
 app.jinja_env.filters['s_files'] = static_files
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')
+
+app.wsgi_app = SessionMiddleware(app.wsgi_app, \
+        FilesystemSessionStore(), \
+        cookie_name=config.SESSION_KEY, cookie_path='/', \
+        cookie_domain=config.SESSION_COOKIE_DOMAIN)
 
 init_db(app)
 
@@ -181,3 +195,14 @@ def api_query_building(uni, bld, date):
 @university_validate
 def api_get_building_list(uni):
     return json.dumps([x.to_json_obj() for x in uni.buildings])
+
+@app.route('/current_user')
+def show_user():
+    user = utils.get_current_user()
+    if not user:
+        return 'No user in session.'
+    return '%s %s' % (user.get('name', ''), user.get('uid', 0))
+
+@app.before_request
+def before_request():
+    g.session = request.environ['xiaomen.session']
