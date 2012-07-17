@@ -1,26 +1,21 @@
 {% extends "layout.html" %}
 
-{% block breadcrumb %}
-<span><a href="/">校门口</a></span>
-<span class="sep"></span>
-<span><a href="/">自习室</a></span>
-<span class="sep"></span>
-<span><a href="/{{ university.no }}/building/{{ classroom.building.no }}/{{ query_date }}/{{ query_class }}">{{ classroom.building.name }}</a></span>
-<span class="sep"></span>
-<span>{{ classroom.name }}</span>
-{% endblock %}
-
-{% block body %}
-<div class="legend">
-    <img src="{{ '/static/img/legend.png' | s_files }}"  height="76px" />
+{% block content %}
+{% include 'select-form.html' %}
+<div class="result-title">
+    <h2>教室详情</h2>
+</div>
+<div class="classroom-meta">
+    <h2>{{ classroom.building.campus.name }}</h2>
+    <h3>{{ classroom.building.name }} - {{ classroom.name }}（{{ query_date | format_date }}起）</h3> 
 </div>
 <div class="result-calendar">
     <table class="classroom-calendar">
         <thead>
             <tr>
-                <th class="lesson-number">&nbsp; </th>
+                <th>&nbsp; </th>
                 {% for o in occupations %}
-                <th>{{ o[1] }}</th>
+                <th class="weekday">{{ o[1] }}</th>
                 {% endfor %}
             </tr>
         </thead>
@@ -37,6 +32,6 @@
     </table>
 </div>
 <div class="back-btn">
-    <a href="/{{ university.no }}/building/{{ classroom.building.no }}/{{ query_date }}/{{ query_class }}">« 返回</a>
+    <a href="/{{ university.no }}/building/{{ classroom.building.no }}/{{ query_date }}/{{ query_class }}">返回教室列表</a>
 </div>
 {% endblock %}
