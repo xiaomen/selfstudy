@@ -1,0 +1,11 @@
+<p id="date"></p>
+<script type="text/javascript">
+$(document).ready(function() {
+var now = new Date(); 
+$('#date').DatePicker({
+	flat: true,
+	date: '{{ query_date }}',
+	current: '{{ query_date }}'
+});
+}); 
+</script>
