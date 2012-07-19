@@ -202,3 +202,43 @@ td.lesson-number {
     font-weight: normal; 
     color: #3999cc; 
 }
+
+.error {
+    border-color: red; 
+}
+
+tbody.datepickerDays td.datepickerNotInMonth.datepickerSelected {
+    background-color: #3999cc; 
+}
+
+#lesson-selected {
+    background: #3999cc; 
+    color: white; 
+}
+
+.clickable {
+    cursor: pointer; 
+}
+
+.query-detail {
+    float: right; 
+    margin-top: 24px; 
+    color: #999; 
+}
+
+.legend {
+    float: right; 
+    color: #9F9F9F; 
+}
+
+.legend .free-legend, .legend .unfree-legend {
+    padding: 0px 15px; 
+}
+
+.legend .free-legend {
+    border: 1px solid #9F9F9F; 
+}
+
+.legend .unfree-legend {
+    background: #9F9F9F; 
+}
