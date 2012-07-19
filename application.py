@@ -40,6 +40,10 @@ def format_class(lesson):
         return LESSON_FORMAT[lesson]
     return u", ".join(lesson.split("-")) + u"节课"
 
+@app.template_filter('check_class')
+def check_date(cls, check_val):
+    return 'id="lesson-selected"' if cls == check_val else "" 
+
 def templated(template=None):
     def decorator(f):
         @wraps(f)

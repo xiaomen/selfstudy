@@ -2,8 +2,17 @@
 
 {% block content %}
 {% include 'select-form.html' %}
+<div class="query-detail">
+    <span>{{ query_date | format_date }}{{ query_class | format_class }}</span>
+</div>
 <div class="result-title">
     <h2>教室详情</h2>
+</div>
+<div class="legend">
+    <span>空闲</span>
+    <span class="free-legend">&nbsp;</span>
+    <span>有课</span>
+    <span class="unfree-legend">&nbsp;</span>
 </div>
 <div class="classroom-meta">
     <h2>{{ classroom.building.campus.name }}</h2>

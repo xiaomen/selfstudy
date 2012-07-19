@@ -2,6 +2,9 @@
 
 {% block content %}
 {% include 'select-form.html' %}
+<div class="query-detail">
+    <span>{{ query_date | format_date }}{{ query_class | format_class }}</span>
+</div>
 <div class="result-title">
     <h2>教学楼列表</h2>
 </div>
