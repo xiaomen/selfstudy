@@ -67,7 +67,7 @@ td.datepickerSelected a span {
 }
 
 .step1 {
-    background: url('/static/img/step1.jpg') no-repeat; 
+    background: url('/selfstudy/static/img/step1.jpg') no-repeat; 
     padding-left: 70px; 
     padding-top: 5px; 
     color: #777; 
@@ -75,7 +75,7 @@ td.datepickerSelected a span {
 }
 
 .step2 {
-    background: url('/static/img/step2.jpg') no-repeat; 
+    background: url('/selfstudy/static/img/step2.jpg') no-repeat; 
     padding-left: 70px; 
     padding-top: 5px; 
     color: #777; 
@@ -115,7 +115,7 @@ td.datepickerSelected a span {
 }
 
 .result-title {
-    background: url('/static/img/arrow.png') no-repeat left center;  
+    background: url('/selfstudy/static/img/arrow.png') no-repeat left center;  
     width: 200px; 
     text-align: center; 
 }
