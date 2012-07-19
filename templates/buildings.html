@@ -1,29 +1,25 @@
-{% extends "query.html" %}
+{% extends "layout.html" %}
 
-{% block breadcrumb %}
-<span><a href="/">校门口</a></span>
-<span class="sep"></span>
-<span>自习室</span>
-{% endblock %}
-
-{% block result %}
-<div class="result">
-    <div class="result-title">
-        <h2>{{ query_date | format_date }}{{ query_class | format_class }}自习室查询结果</h2>
-    </div>
-    <div class="result-body">
-    {% for campus in university.campuses %}
-    {% if university.campuses | length > 1 %}
-        <div class="result-campus">{{ campus.name }}</div>
-    {% endif %}
-        <ul class="result-list">
-    {% for building in campus.buildings %}
-            <li>
-                <a href="/{{ university.no}}/building/{{ building.no }}/{{ query_date.isoformat() }}/{{ query_class }}">{{ building.name }}({{ count[building.id] }})</a>
-            </li>
-    {% endfor %}
-        </ul>
-    {% endfor %}
-    </div>
+{% block content %}
+{% include 'select-form.html' %}
+<div class="query-detail">
+    <span>{{ query_date | format_date }}{{ query_class | format_class }}</span>
+</div>
+<div class="result-title">
+    <h2>教学楼列表</h2>
+</div>
+<div class="result-body">
+{% for campus in university.campuses %}
+{% if university.campuses | length > 1 %}
+    <div class="result-campus">{{ campus.name }}</div>
+{% endif %}
+    <ul class="result-list">
+{% for building in campus.buildings %}
+        <li>
+            <a href="/{{ university.no}}/building/{{ building.no }}/{{ query_date.isoformat() }}/{{ query_class }}">{{ building.name }}({{ count[building.id] }})</a>
+        </li>
+{% endfor %}
+    </ul>
+{% endfor %}
 </div>
 {% endblock %}
