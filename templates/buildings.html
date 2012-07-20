@@ -2,11 +2,10 @@
 
 {% block content %}
 {% include 'select-form.html' %}
-<div class="query-detail">
-    <span>{{ query_date | format_date }}{{ query_class | format_class }}</span>
-</div>
-<div class="result-title">
-    <h2>教学楼列表</h2>
+<div class="result-title auto-width-arrow">
+    <span class="left-arrow"></span>
+    <span>{{ query_date | format_date | safe }}&nbsp;<strong>{{ query_class | format_class }}</strong>&nbsp;<strong>可自习</strong>&nbsp;教学楼列表</span>
+    <span class="right-arrow"></span>
 </div>
 <div class="result-body">
 {% for campus in university.campuses %}
