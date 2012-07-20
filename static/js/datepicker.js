@@ -263,6 +263,7 @@ Date.prototype.format = function (mask, utc) {
 				var options = $(el).data('datepicker');
 				var cal = $(el);
 				var currentCal = Math.floor(options.calendars/2), date, data, dow, month, cnt = 0, week, days, indic, indic2, html, tblCal;
+                                var today = new Date(); 
 				cal.find('td>table tbody').remove();
 				for (var i = 0; i < options.calendars; i++) {
 					date = new Date(options.current);
@@ -310,6 +311,9 @@ Date.prototype.format = function (mask, utc) {
 							text: date.getDate(),
 							classname: []
 						};
+                                                if(date.format('yyyy-mm-dd') == today.format('yyyy-mm-dd')) { 
+                                                    data.weeks[indic].days[indic2].classname.push('datepickerToday'); 
+                                                }
 						if (month != date.getMonth()) {
 							data.weeks[indic].days[indic2].classname.push('datepickerNotInMonth');
 						}
