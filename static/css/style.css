@@ -218,6 +218,8 @@ tbody.datepickerDays td.datepickerNotInMonth.datepickerSelected {
 
 .clickable {
     cursor: pointer; 
+    font-size: 14px; 
+    padding: 5px; 
 }
 
 .query-detail {
@@ -241,4 +243,30 @@ tbody.datepickerDays td.datepickerNotInMonth.datepickerSelected {
 
 .legend .unfree-legend {
     background: #9F9F9F; 
+}
+
+.auto-width-arrow {
+    padding: 0; 
+    width: auto; 
+    text-align: left; 
+    margin: 20px 0; 
+    background: none; 
+}
+
+.left-arrow {
+    background: url('/selfstudy/static/img/left-arrow.png') no-repeat left center; 
+    padding-left: 54px; 
+}
+
+.right-arrow {
+    background: url('/selfstudy/static/img/right-arrow.png') no-repeat left center; 
+    padding-left: 54px; 
+}
+
+.datepickerToday {
+    border: 1px solid #3999cc !important; 
+}
+
+.datepickerToday a {
+    color: #3999cc !important; 
 }

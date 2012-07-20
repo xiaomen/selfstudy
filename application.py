@@ -32,7 +32,7 @@ init_db(app)
 @app.template_filter('format_date')
 def format_date(date):
     year, month, day = str(date).split("-")
-    return u"%s年%s月%s日" % (year, month, day)
+    return u"%s年<strong>%d</strong>月<strong>%d</strong>日" % (year, int(month), int(day))
 
 @app.template_filter('format_class')
 def format_class(lesson):
