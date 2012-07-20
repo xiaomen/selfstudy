@@ -4,6 +4,7 @@ import datetime
 from flask import Flask, redirect, url_for,\
         abort, request, render_template, g
 from functools import wraps
+from werkzeug.useragents import UserAgent
 
 import utils
 import config
@@ -44,9 +45,16 @@ app.wsgi_app = SessionMiddleware(app.wsgi_app, \
 init_db(app)
 
 @app.template_filter('format_date')
-def format_date(date):
-    year, month, day = str(date).split("-")
-    return u"%s年<strong>%d</strong>月<strong>%d</strong>日" % (year, int(month), int(day))
+def format_date(select):
+    today = datetime.datetime.now()
+    delta = select - today.date()
+    if delta.days == 0:
+        return u"今日"
+    elif delta.days == 1:
+        return u"明日"
+    elif delta.days == 2:
+        return u"后日"
+    return u"%s年<strong>%d</strong>月<strong>%d</strong>日" % (select.year, select.month, select.day)
 
 @app.template_filter('format_class')
 def format_class(lesson):
@@ -57,6 +65,19 @@ def format_class(lesson):
 @app.template_filter('check_class')
 def check_date(cls, check_val):
     return 'id="lesson-selected"' if cls == check_val else "" 
+
+def get_ua(method):
+    @wraps(method)
+    def wrapper(*args, **kwargs):
+        ua = UserAgent(request.headers.get('User-Agent'))
+        if ua.browser == 'msie':
+            try:
+                if int(float(ua.version)) < 8:
+                    return render_template("noie.html")
+            except:
+                return render_template("noie.html")
+        return method(*args, **kwargs) 
+    return wrapper
 
 def templated(template=None):
     def decorator(f):
@@ -89,6 +110,7 @@ def index(uni, quantity=0):
         uni=uni.no, date=today.isoformat(), classes=alldays))
 
 @app.route('/<uni>/buildings/<date>/<classes>')
+@get_ua
 @university_validate
 @date_validate
 @classes_validate
