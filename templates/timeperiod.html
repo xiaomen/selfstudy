@@ -22,10 +22,6 @@ $('.clickable').click(function() {
     $('.clickable').removeAttr('id'); 
     $(this).attr('id', 'lesson-selected'); 
     $('.time-period').removeClass('error'); 
-    if(["1-2", "3-4", "5-6", "7-8", "9-10", "9-10-11", "1-2-3-4-5-6-7-8-9-10-11"].indexOf(lesson) == -1) {
-        $('.time-period').addClass('error'); 
-        return false; 
-    }
     url_array = window.location.href.split('/'); 
     url_array.pop(); 
     url_array.pop(); 
