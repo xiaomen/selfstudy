@@ -140,6 +140,7 @@ def get_buildings(uni, date, classes):
             count=count)
 
 @app.route('/<uni>/building/<bld>/<date>/<classes>')
+@get_ua
 @university_validate
 @date_validate
 @classes_validate
@@ -171,6 +172,7 @@ def get_building(uni, bld, date, classes):
             classrooms=free_classrooms)
 
 @app.route('/<uni>/classroom/<clr>')
+@get_ua
 @university_validate
 @classroom_validate
 @templated('classroom.html')
