@@ -2,6 +2,7 @@ application: selfstudy
 version: 1
 runtime: python
 api_version: 1
+sentry_dsn: http://177e3b7311854445988acc44b03c52a1:ad81eac6f6934a6ba1401062f34c4668@deploy.xiaom.co:9000/2
 
 handlers:
 - url: /favicon.ico
