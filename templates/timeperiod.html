@@ -12,7 +12,8 @@
     </tr>
     <tr>
         <th>晚上</th>
-        <td colspan="2" class="clickable" data-lesson="9-10-11" {{ query_class | check_class('9-10-11') | safe }}>9-10-11</td>
+        <td class="clickable" data-lesson="9-10" {{ query_class | check_class('9-10') | safe }}>9-10</td>
+        <td class="clickable" data-lesson="9-10-11" {{ query_class | check_class('9-10-11') | safe }}>9-10-11</td>
     </tr>
 </table>
 <script type="text/javascript">
@@ -21,7 +22,7 @@ $('.clickable').click(function() {
     $('.clickable').removeAttr('id'); 
     $(this).attr('id', 'lesson-selected'); 
     $('.time-period').removeClass('error'); 
-    if(["1-2", "3-4", "1-2-3-4", "5-6", "7-8", "5-6-7-8", "9-10", "11", "9-10-11", "1-2-3-4-5-6-7-8-9-10-11"].indexOf(lesson) == -1) {
+    if(["1-2", "3-4", "5-6", "7-8", "9-10", "9-10-11", "1-2-3-4-5-6-7-8-9-10-11"].indexOf(lesson) == -1) {
         $('.time-period').addClass('error'); 
         return false; 
     }
