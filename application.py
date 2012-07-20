@@ -46,6 +46,8 @@ init_db(app)
 
 @app.template_filter('format_date')
 def format_date(select):
+    year, month, day = map(int, str(select).split("-"))
+    select = datetime.datetime(year, month, day).date()
     today = datetime.datetime.now()
     delta = select - today.date()
     if delta.days == 0:
