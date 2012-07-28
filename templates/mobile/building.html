@@ -1,0 +1,26 @@
+{% extends "mobile/layout.html" %}
+
+{% block content %}
+{% include "mobile/query.html"%}
+<div class="result">
+    <div class="result-title">
+        <h2>查询结果</h2>
+    </div>
+    <div class="result-meta">
+        <h3>{{ building.campus.name }}</h3>
+        <h3 class="building">{{ building.name }}（{{ classrooms | length }}）</h3>
+    </div>
+    <div class="result-content">
+        <div class="classroom-list result-list">
+            <ul>
+                {% for c in classrooms %}
+                <li><span>{{ c.name }}</span></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="back-btn">
+        <a href="/{{ university.no }}/buildings/{{ query_date.isoformat() }}/{{ query_class }}">返回上一页</a>
+    </div>
+</div>
+{% endblock %}

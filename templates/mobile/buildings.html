@@ -1,0 +1,26 @@
+{% extends "mobile/layout.html" %}
+
+{% block content %}
+{% include "mobile/query.html"%}
+<div class="result">
+    <div class="result-title">
+        <h2>查询结果</h2>
+    </div>
+    <div class="result-content">
+        {% for campus in university.campuses %}
+        {% if university.campuses | length %}
+        <div class="campus-name">
+            <span>{{ campus.name }}</span>
+        </div>
+        {% endif %}
+        <div class="buildings-list result-list">
+            <ul>
+                {% for building in campus.buildings %}
+                <li><a href="/{{ university.no}}/building/{{ building.no }}/{{ query_date.isoformat() }}/{{ query_class }}">{{ building.name }}({{ count[building.id] }})</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
