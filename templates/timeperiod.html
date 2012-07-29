@@ -1,0 +1,32 @@
+<table class="time-period">
+    <tr class="first-line">
+        <th style="width: 70px">上午</th>
+        <td class="clickable" data-lesson="1-2" {{ query_class | check_class('1-2') | safe}}>1-2</td>
+        <td class="clickable" data-lesson="3-4" {{ query_class | check_class('3-4') | safe }}>3-4</td>
+        <td rowspan="3" class="clickable" data-lesson="1-2-3-4-5-6-7-8-9-10-11" {{ query_class | check_class('1-2-3-4-5-6-7-8-9-10-11') | safe }}>全天</td>
+    </tr>
+    <tr>
+        <th>下午</th>
+        <td class="clickable" data-lesson="5-6" {{ query_class | check_class('5-6') | safe }}>5-6</td>
+        <td class="clickable" data-lesson="7-8" {{ query_class | check_class('7-8') | safe }}>7-8</td>
+    </tr>
+    <tr>
+        <th>晚上</th>
+        <td class="clickable" data-lesson="9-10" {{ query_class | check_class('9-10') | safe }}>9-10</td>
+        <td class="clickable" data-lesson="9-10-11" {{ query_class | check_class('9-10-11') | safe }}>9-10-11</td>
+    </tr>
+</table>
+<script type="text/javascript">
+$('.clickable').click(function() {
+    var lesson = $(this).data('lesson'); 
+    $('.clickable').removeAttr('id'); 
+    $(this).attr('id', 'lesson-selected'); 
+    $('.time-period').removeClass('error'); 
+    url_array = window.location.href.split('/'); 
+    url_array.pop(); 
+    url_array.pop(); 
+    url_array.push('{{ query_date }}'); 
+    url_array.push(lesson); 
+    window.location.href = url_array.join('/'); 
+}); 
+</script>
