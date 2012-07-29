@@ -1,0 +1,38 @@
+<p id="date"></p>
+<script type="text/javascript">
+$(document).ready(function() {
+var now = new Date(); 
+$('#date').DatePicker({
+	flat: true,
+	date: '{{ query_date }}',
+        current: '{{ query_date }}', 
+        onChange: function(e) {
+            var dates = e.split('-');
+            var cal; 
+            var now = new Date(); 
+            var year, month, day; 
+            var calendar = $(".datepickerContainer"); 
+            var url_array; 
+            calendar.removeClass('error'); 
+            year = parseInt(dates[0], 10); 
+            month = parseInt(dates[1], 10) - 1; 
+            day = parseInt(dates[2], 10) + 1; 
+            cal = new Date(year, month, day); 
+            if(cal < now) {
+                calendar.addClass('error');
+                return false; 
+            }
+            if((cal - now)/1000/60/60/24 > 365.00) {
+                calendar.addClass('error'); 
+                return false; 
+            }
+            url_array = window.location.href.split('/'); 
+            url_array.pop(); 
+            url_array.pop(); 
+            url_array.push(e); 
+            url_array.push('{{ query_class }}'); 
+            window.location.href = url_array.join('/'); 
+        }
+});
+}); 
+</script>

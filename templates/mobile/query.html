@@ -1,0 +1,52 @@
+<div class="query-box">
+    <div class="query-line">
+        <div class="query-title">
+            <span>日期：</span>
+        </div>
+        <div class="query-select">
+            <ul>
+                {% for d in dates %}
+                {% if query_date == d[0] %}
+                <li class="active"><a href="#">{{ d[1] }}</a></li>
+                {% else %}
+                <li><a href="/{{ university.no }}/buildings/{{ d[0].isoformat() }}/{{ query_class }}">{{ d[1] }}</a></li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="query-line">
+        <div class="query-title">
+            <span>时段：</span>
+        </div>
+        <div class="query-select">
+            <ul>
+                {% set period = [('1-2-3-4-5-6-7-8-9-10-11', '全天'), ('1-2-3-4', '上午'), ('5-6-7-8', '下午'), ('9-10-11', '晚上')] %}
+                {% for p in period %}
+                {% if p[0] == query_class %}
+                <li class="active"><a href="#">{{ p[1] }}</a></li>
+                {% else %}
+                <li><a href="/{{ university.no }}/buildings/{{ query_date }}/{{ p[0] }}">{{ p[1] }}</a></li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="query-line">
+        <div class="query-title">
+            <span>课堂：</span>
+        </div>
+        <div class="query-select">
+            <ul>
+                {% set classes = ['1-2', '3-4', '5-6', '7-8', '9-10-11'] %}
+                {% for c in classes %}
+                {% if c == query_class %}
+                <li class="active"><a href="#">{{ c }}</a></li>
+                {% else %}
+                <li><a href="/{{ university.no }}/buildings/{{ query_date }}/{{ c }}">{{ c }}</a></li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>

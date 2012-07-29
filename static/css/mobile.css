@@ -1,0 +1,116 @@
+.query-box {
+    padding: 0 20px; 
+    margin-top: 20px; 
+    border-bottom: 1px solid #3999CC; 
+}
+
+.query-title {
+    float: left; 
+    padding: 10px 0; 
+}
+
+.query-select {
+    margin-left: 50px; 
+}
+
+.query-select ul {
+    display: inline-block; 
+    margin: 0; 
+    padding: 0; 
+}
+
+.query-select ul li {
+    display: inline; 
+    list-style: none; 
+}
+
+.query-select ul li:after {
+    content: "|"; 
+}
+
+.query-select ul li:last-child:after {
+    content: ""; 
+    color: #777; 
+}
+
+.query-select ul li a {
+    text-decoration: none; 
+    margin: 10px; 
+    display: inline-block; 
+    color: #777; 
+}
+
+.query-select ul li.active a {
+    color: #3999CC; 
+}
+
+.query-line {
+    margin: 20px 0; 
+    color: #777; 
+}
+
+.result {
+    margin: 0 20px; 
+}
+
+.result-title {
+    text-align: center; 
+    color: #3999CC; 
+    margin: 10px 0; 
+}
+
+.result-title h2 {
+    font-weight: normal; 
+    font-size: 18px; 
+    letter-spacing: 0.2em; 
+}
+
+.result-list ul {
+    margin: 0; 
+    padding: 0; 
+    margin-bottom: 20px; 
+}
+
+.result-list ul li {
+    display: inline;
+}
+
+.result-list ul li a {
+    margin: 5px; 
+    margin-left: 0; 
+    display: inline-block; 
+    text-decoration: none; 
+    color: #3999CC; 
+}
+
+.classroom-list ul {
+    text-align: center; 
+}
+
+.result-meta h3 {
+    font-weight: normal; 
+    font-size: 12px; 
+    -webkit-text-size-adjust: 100%; 
+}
+
+.result-meta .building {
+    color: #3999CC; 
+}
+
+.classroom-list {
+    margin: 10px 0; 
+}
+
+.classroom-list li span {
+    margin-right: 10px; 
+    display: inline-block; 
+}
+
+.back-btn {
+    text-align: right; 
+}
+
+.back-btn a {
+    text-decoration: none; 
+    color: #3999CC; 
+}
