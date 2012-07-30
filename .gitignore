@@ -3,4 +3,4 @@ permdir
 *.py[co]
 *.swp
 dev.yaml
-db_dumps.sql
+syncdb_dumps.bak
