@@ -1,7 +1,3 @@
-
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `selfstudy` /*!40100 DEFAULT CHARACTER SET utf8 */;
-
-USE `selfstudy`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `buildings` (
