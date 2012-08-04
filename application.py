@@ -192,7 +192,6 @@ def get_classroom(uni, clr):
             occupies = result.occupies
         occupations.append((d[0], d[1],
                             utils.int2classes(occupies, uni.class_quantity)))
-    print dir(clr.building.campus.name)
     return dict(university=uni,
             classroom=clr,
             query_date=request.args.get('date', ''),
