@@ -95,7 +95,7 @@ def templated(template=None):
             elif not isinstance(ctx, dict):
                 return ctx
             ua = UserAgent(request.headers.get('User-Agent'))
-            if ua.platform.lower() in ["android", "iphone"]:
+            if ua.platform or ua.platform.lower() in ["android", "iphone"]:
                 return render_template("mobile/" + template_name, **ctx)
             return render_template(template_name, **ctx)
         return decorated_function
