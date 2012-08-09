@@ -1,17 +1,17 @@
 <table class="time-period">
     <tr class="first-line">
-        <th style="width: 70px">上午</th>
-        <td class="clickable" data-lesson="1-2" {{ query_class | check_class('1-2') | safe}}>1-2</td>
-        <td class="clickable" data-lesson="3-4" {{ query_class | check_class('3-4') | safe }}>3-4</td>
+        <th style="width: 70px" class="clickable" data-lesson="1-2-3-4">上午</th>
+        <td class="clickable" data-lesson="1-2" {{ query_class | check_class('1-2') | safe}} {{ query_class | check_class('1-2-3-4') | safe }}>1-2</td>
+        <td class="clickable" data-lesson="3-4" {{ query_class | check_class('3-4') | safe }} {{ query_class | check_class('1-2-3-4') | safe }}>3-4</td>
         <td rowspan="3" class="clickable" data-lesson="1-2-3-4-5-6-7-8-9-10-11" {{ query_class | check_class('1-2-3-4-5-6-7-8-9-10-11') | safe }}>全天</td>
     </tr>
     <tr>
-        <th>下午</th>
-        <td class="clickable" data-lesson="5-6" {{ query_class | check_class('5-6') | safe }}>5-6</td>
-        <td class="clickable" data-lesson="7-8" {{ query_class | check_class('7-8') | safe }}>7-8</td>
+        <th class="clickable" data-lesson="5-6-7-8">下午</th>
+        <td class="clickable" data-lesson="5-6" {{ query_class | check_class('5-6') | safe }} {{ query_class | check_class('5-6-7-8') | safe }}>5-6</td>
+        <td class="clickable" data-lesson="7-8" {{ query_class | check_class('7-8') | safe }} {{ query_class | check_class('5-6-7-8') | safe }}>7-8</td>
     </tr>
     <tr>
-        <th>晚上</th>
+        <th class="clickable" data-lesson="9-10-11">晚上</th>
         <td class="clickable" data-lesson="9-10" {{ query_class | check_class('9-10') | safe }}>9-10</td>
         <td class="clickable" data-lesson="9-10-11" {{ query_class | check_class('9-10-11') | safe }}>9-10-11</td>
     </tr>
