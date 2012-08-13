@@ -7,6 +7,8 @@ import urllib2
 
 from flask import g
 
+from sheep.api.open import rpc
+
 days = [u'一', u'二', u'三', u'四', u'五', u'六', u'日']
 def str2date(date_str):
     return datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
@@ -49,12 +51,15 @@ def get_interval_date(length):
     return zip(dates, names)
 
 def get_user(uid):
-    url = 'http://open.xiaomen.co/api/people/' + str(uid)
-    req = urllib2.Request(url)
-    req.add_header('X-APP-NAME', 'account')
-    res = urllib2.urlopen(req, timeout=15)
-    return json.loads(res.read())
+    response_str = rpc('account', 'api/people/{0}'.format(uid))
+    user = json.loads(response_str)
+    if user.get('status', '') == 'ok':
+        return user
+    return None
     
+def get_unread_mail_count(uid):
+    response_str = rpc('account', 'api/unread/{0}'.format(uid))
+    return json.loads(response_str).get('count', 0)
 
 def get_current_user():
     if not g.session or not g.session.get('user_id') or not g.session.get('user_token'):
