@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import json
 import datetime
-import urllib
-import urllib2
 
 from flask import g
 
@@ -49,19 +46,3 @@ def get_interval_date(length):
     names = map(lambda x: u'周{0}'.format(days[x.isoweekday() - 1]), dates)
     names[0] = u'今天'
     return zip(dates, names)
-
-def get_user(uid):
-    response_str = rpc('account', 'api/people/{0}'.format(uid))
-    user = json.loads(response_str)
-    if user.get('status', '') == 'ok':
-        return user
-    return None
-    
-def get_unread_mail_count(uid):
-    response_str = rpc('account', 'api/unread/{0}'.format(uid))
-    return json.loads(response_str).get('count', 0)
-
-def get_current_user():
-    if not g.session or not g.session.get('user_id') or not g.session.get('user_token'):
-        return None
-    return get_user(g.session['user_id'])
