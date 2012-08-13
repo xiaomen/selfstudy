@@ -23,9 +23,9 @@
         {% else %}
         <span>
             {% if g.current_user.domain %}
-            <a href="{{ url_for('people.show_people', username=g.current_user.domain) }}">{{ g.current_user.name }}</a>
+            <a href="{{ generate_user_url(g.current_user.domain) }}">{{ g.current_user.name }}</a>
             {% else %}
-            <a href="{{ url_for('people.show_people', username=g.current_user.id)}}">{{ g.current_user.name }}</a>
+            <a href="{{ generate_user_url(g.current_user.id) }}">{{ g.current_user.name }}</a>
             {% endif %}
         </span>
         <span class="sep"></span>
