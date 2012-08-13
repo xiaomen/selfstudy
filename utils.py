@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
-import json
 import datetime
-import urllib
-import urllib2
 
 from flask import g
+
+from sheep.api.open import rpc
 
 days = [u'一', u'二', u'三', u'四', u'五', u'六', u'日']
 def str2date(date_str):
@@ -47,16 +46,3 @@ def get_interval_date(length):
     names = map(lambda x: u'周{0}'.format(days[x.isoweekday() - 1]), dates)
     names[0] = u'今天'
     return zip(dates, names)
-
-def get_user(uid):
-    url = 'http://open.xiaomen.co/api/people/' + str(uid)
-    req = urllib2.Request(url)
-    req.add_header('X-APP-NAME', 'account')
-    res = urllib2.urlopen(req, timeout=15)
-    return json.loads(res.read())
-    
-
-def get_current_user():
-    if not g.session or not g.session.get('user_id') or not g.session.get('user_token'):
-        return None
-    return get_user(g.session['user_id'])
