@@ -16,14 +16,22 @@
 <body>
 <div class="wrapper">
     <div class="nav">
-        {% if not login %}
-        <span><a href="{{ login_url }}">登录</a></span>
+        {% if not g.current_user %}
+        <span><a href="http://account.xiaomen.co/account/login">登录</a></span>
+        <span class="sep"></span>
+        <span><a href="http://account.xiaomen.co/account/register">注册</a></span>
         {% else %}
-        <span><a href="{{ my_url }}">{{ user.name }}</a></span>
+        <span>
+            {% if g.current_user.domain %}
+            <a href="{{ url_for('people.show_people', username=g.current_user.domain) }}">{{ g.current_user.name }}</a>
+            {% else %}
+            <a href="{{ url_for('people.show_people', username=g.current_user.id)}}">{{ g.current_user.name }}</a>
+            {% endif %}
+        </span>
         <span class="sep"></span>
-        <span><a href="/mail/">邮件</a>{% if unread_mail_count > 0 %}[{{unread_mail_count}}]{% endif %}</span>
+        <span><a href="http://account.xiaomen.co/mail/">邮件</a>{% if g.unread_mail_count() > 0 %}<span class="unread"><sup>[{{g.unread_mail_count()}}]</sup></span>{% endif %}</span>
         <span class="sep"></span>
-        <span><a href="/account/logout">登出</a></span>
+        <span><a href="http://account.xiaomen.co/account/logout">登出</a></span>
         {% endif %}
     </div>
     <div class="body-wrapper">

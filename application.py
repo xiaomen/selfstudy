@@ -95,7 +95,7 @@ def templated(template=None):
             elif not isinstance(ctx, dict):
                 return ctx
             ua = UserAgent(request.headers.get('User-Agent'))
-            if ua.platform.lower() in ["android", "iphone"]:
+            if ua.platform and ua.platform.lower() in ["android", "iphone"]:
                 return render_template("mobile/" + template_name, **ctx)
             return render_template(template_name, **ctx)
         return decorated_function
@@ -192,7 +192,6 @@ def get_classroom(uni, clr):
             occupies = result.occupies
         occupations.append((d[0], d[1],
                             utils.int2classes(occupies, uni.class_quantity)))
-    print dir(clr.building.campus.name)
     return dict(university=uni,
             classroom=clr,
             query_date=request.args.get('date', ''),
@@ -240,3 +239,6 @@ def show_user():
 @app.before_request
 def before_request():
     g.session = request.environ['xiaomen.session']
+    g.current_user = utils.get_current_user()
+    if g.current_user:
+        pass
