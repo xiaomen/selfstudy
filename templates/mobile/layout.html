@@ -17,7 +17,7 @@
             {% if g.current_user.domain %}
             <li><a href="{{ generate_user_url(g.current_user.domain) }}">{{ g.current_user.name }}</a></li>
             {% else %}
-			<li><a href="{{ generate_user_url(g.current_user.id }}">{{ g.current_user.name }}</a></li>
+            <li><a href="{{ generate_user_url(g.current_user.uid) }}">{{ g.current_user.name }}</a></li>
             {% endif %}
             <li><a href="http://account.xiaomen.co/mail/">邮件{% if g.unread_mail_count() > 0 %}({{g.unread_mail_count()}}){% endif %}</a></li>
             <li><a href="http://account.xiaomen.co/account/logout">登出</a></li>
