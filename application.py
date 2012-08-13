@@ -239,3 +239,6 @@ def show_user():
 @app.before_request
 def before_request():
     g.session = request.environ['xiaomen.session']
+    g.current_user = utils.get_current_user()
+    if g.current_user:
+        pass
