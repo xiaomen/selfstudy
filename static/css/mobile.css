@@ -68,11 +68,11 @@
 .result-list ul {
     margin: 0; 
     padding: 0; 
-    margin-bottom: 20px; 
 }
 
 .result-list ul li {
-    display: inline;
+    float: left;
+    list-style: none;
 }
 
 .result-list ul li a {
