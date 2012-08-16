@@ -77,6 +77,9 @@ def check_date(cls, check_val):
 def get_ua(method):
     @wraps(method)
     def wrapper(*args, **kwargs):
+        ua_string = request.headers.get('User-Agent')
+        if not ua_string:
+            return method(*args, **kwargs)
         ua = UserAgent(request.headers.get('User-Agent'))
         if ua.browser == 'msie':
             try:
