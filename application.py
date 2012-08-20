@@ -77,6 +77,9 @@ def check_date(cls, check_val):
 def get_ua(method):
     @wraps(method)
     def wrapper(*args, **kwargs):
+        ua_string = request.headers.get('User-Agent')
+        if not ua_string:
+            return method(*args, **kwargs)
         ua = UserAgent(request.headers.get('User-Agent'))
         if ua.browser == 'msie':
             try:
@@ -100,7 +103,10 @@ def templated(template=None):
                 ctx = {}
             elif not isinstance(ctx, dict):
                 return ctx
-            ua = UserAgent(request.headers.get('User-Agent'))
+            ua_string = request.headers.get('User-Agent')
+            if not ua_string:
+                return render_template("mobile/" + template_name, **ctx) 
+            ua = UserAgent(ua_string)
             if ua.platform and ua.platform.lower() in ["android", "iphone"]:
                 return render_template("mobile/" + template_name, **ctx)
             return render_template(template_name, **ctx)
