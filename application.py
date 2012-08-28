@@ -147,7 +147,6 @@ def get_buildings(uni, date, classes):
     for b in uni.buildings:
         count[b.id] = len(filter(lambda x: x.building_id == b.id, free_classrooms))
 
-    db.session.close()
     return dict(university=uni,
             dates=utils.get_date_filters(),
             query_date=date,
@@ -179,7 +178,6 @@ def get_building(uni, bld, date, classes):
             filter(Classroom.building_id==building.id).\
             filter(~Classroom.id.in_(occupations)).all()
 
-    db.session.close()
     return dict(university=uni,
             dates=utils.get_date_filters(),
             query_date=date,
@@ -206,7 +204,6 @@ def get_classroom(uni, clr):
             occupies = result.occupies
         occupations.append((d[0], d[1],
                             utils.int2classes(occupies, uni.class_quantity)))
-    db.session.close()
     return dict(university=uni,
             classroom=clr,
             query_date=request.args.get('date', ''),
@@ -237,13 +234,17 @@ def api_query_building(uni, bld, date):
                 **(c.to_json_obj()))
         obj['class_list'].append(classroom)
 
-    db.session.close()
     return json.dumps(obj)
 
 @app.route('/selfstudy/api/<uni>/buildings')
 @university_validate
 def api_get_building_list(uni):
     return json.dumps([x.to_json_obj() for x in uni.buildings])
+
+@app.teardown_request
+def teardown_request(exception=None):
+    if db.session:
+        db.session.close()
 
 @app.before_request
 def before_request():
