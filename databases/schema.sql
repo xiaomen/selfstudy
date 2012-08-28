@@ -47,7 +47,7 @@ CREATE TABLE `occupies` (
   `occupies` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `classroom_id` (`classroom_id`)
-) ENGINE=InnoDB4239 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB0179 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
