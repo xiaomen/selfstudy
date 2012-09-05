@@ -1,5 +1,6 @@
-__all__  = ['db', 'University', 'Building', 'Classroom', 'init_db', 'Campus', 'Occupation']
+__all__  = ['db', 'University', 'Building', 'Classroom', 'init_db', 'Campus', 'Occupation', 'Feedback']
 
+from datetime import datetime
 from flaskext.sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -136,3 +137,22 @@ class Occupation(db.Model):
         self.occupies = occupies
     def __repr__(self):
         return '<Occupation {0} {1} {2}'.format(self.classroom_id, self.date, self.occupies)
+
+class Feedback(db.Model):
+    __tablename__ = 'feedback'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    uid = db.Column(db.Integer, nullable=False, index=True)
+    classroom_id = db.Column(db.Integer, nullable=False, index=True)
+    occupy = db.Column(db.Boolean)
+    created = db.Column(db.DateTime, default=datetime.now)
+
+    def __init__(self, uid, classroom_id, occupy):
+        self.uid = uid
+        self.classroom_id = classroom_id
+        self.occupy = occupy
+
+    @staticmethod
+    def create(uid, classroom_id, occupy=True):
+        f = Feedback(uid, classroom_id, occupy)
+        db.session.add(f)
+        db.session.commit()
