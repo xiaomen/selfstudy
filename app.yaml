@@ -11,3 +11,4 @@ handlers:
   static_files: static/\1
 - url: /.*
   wsgi_app: application:app
+
