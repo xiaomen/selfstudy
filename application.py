@@ -241,6 +241,13 @@ def api_query_building(uni, bld, date):
 def api_get_building_list(uni):
     return json.dumps([x.to_json_obj() for x in uni.buildings])
 
+@app.route('/api/feedback/<classroom_id>')
+def api_classroom_feedback(classroom_id):
+    if not g.current_user:
+        return 'no user in session'
+    Feedback.create(g.current_user.uid, int(classroom_id))
+    return 'success'
+
 @app.teardown_request
 def teardown_request(exception=None):
     if db.session:
