@@ -11,7 +11,7 @@ CREATE TABLE `buildings` (
   PRIMARY KEY (`id`),
   KEY `university_id` (`university_id`),
   KEY `campus_id` (`campus_id`)
-) ENGINE=InnoDB2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -23,7 +23,7 @@ CREATE TABLE `campuses` (
   `seq` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `university_id` (`university_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -36,7 +36,20 @@ CREATE TABLE `classrooms` (
   `seq` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `building_id` (`building_id`)
-) ENGINE=InnoDB88 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=388 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `feedback` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NOT NULL,
+  `classroom_id` int(11) NOT NULL,
+  `occupy` tinyint(1) DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ix_feedback_uid` (`uid`),
+  KEY `ix_feedback_classroom_id` (`classroom_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -47,7 +60,7 @@ CREATE TABLE `occupies` (
   `occupies` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `classroom_id` (`classroom_id`)
-) ENGINE=InnoDB4239 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14239 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -59,7 +72,7 @@ CREATE TABLE `periods` (
   `end` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `university_id` (`university_id`)
-) ENGINE=InnoDB0 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -69,5 +82,5 @@ CREATE TABLE `universities` (
   `no` varchar(20) DEFAULT NULL,
   `class_quantity` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
