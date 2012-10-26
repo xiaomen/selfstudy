@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1, user-scalable=0">
+    <meta charset="UTF-8" />
+    <title>{% block title %}校门口{% endblock %}</title>
+    <link rel="stylesheet" href="{{'/static/css/reset.css' | s_files }}" />
+    <link rel="stylesheet" href="{{'/static/css/base.css' | s_files }}" />
+    <link rel="stylesheet" href="{{'/static/css/datepicker.css' | s_files }}" />
+    <link rel="stylesheet" href="{{'/static/css/style.css' | s_files }}" />
+    <link rel="stylesheet" href="{{'/static/css/admin.css' | s_files }}" />
+    <script src="{{ '/static/js/jquery-1.7.2.min.js' | s_files }}" type="text/javascript"></script>
+    <script type="text/javascript" src="{{ '/static/js/datepicker.js' | s_files }}"></script>
+    <script type="text/javascript" src="{{ '/static/js/eye.js' | s_files }}"></script>
+    <script type="text/javascript" src="{{ '/static/js/utils.js' | s_files }}"></script>
+</head>
+<body>
+<div class="wrapper">
+    <div class="nav">
+        {% if not g.current_user %}
+		<span><a href="{{ generate_login_url() }}">登录</a></span>
+        <span class="sep"></span>
+		<span><a href="{{ generate_register_url() }}">注册</a></span>
+        {% else %}
+        <span>
+            {% if g.current_user.domain %}
+            <a href="{{ generate_user_url(g.current_user.domain) }}">{{ g.current_user.name }}</a>
+            {% else %}
+            <a href="{{ generate_user_url(g.current_user.id) }}">{{ g.current_user.name }}</a>
+            {% endif %}
+        </span>
+        <span class="sep"></span>
+		<span><a href="{{ generate_mail_url() }}">邮件</a>{% if g.unread_mail_count() > 0 %}<span class="unread"><sup>[{{g.unread_mail_count()}}]</sup></span>{% endif %}</span>
+        <span class="sep"></span>
+		<span><a href="{{ generate_logout_url() }}">登出</a></span>
+        {% endif %}
+    </div>
+    <div class="body-wrapper">
+        <div class="header">
+            <div class="logo">
+                <a href="/">
+                    <img src="{{ '/static/img/logo.png' | s_files }}" />
+                </a>
+            </div>
+        </div>
+        <div class="body-content">
+            <table class="table-content" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td class="sidebar">{% include 'sidebar.html' %}</td>
+                    <td class="content">{% block content %}{% endblock %}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="footer">
+        <span><a href="/about">关于校门口</a></span>
+        <span class="sep"></span>
+        <span><a href="/contact">联系我们</a></span>
+        <span class="sep"></span>
+        <span><a href="/duty">免责声明</a></span>
+        <span class="sep"></span>
+        <span><a href="/report">反馈</a></span>
+    </div>
+</div>
+</body>
+</html>

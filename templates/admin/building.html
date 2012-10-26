@@ -1,0 +1,34 @@
+{% extends "admin/layout.html" %}
+{% from "admin/helper.html" import render_field %}
+
+{% block content %}
+
+<div>
+	<div>
+		<span style="float:right"><a href="{{ url_for('admin.index') }}">Return</a></span>
+		<h1>{{ building.name }}</h2>
+	</div>
+
+	<form method="POST">
+		<table>
+			{{ render_field(form.name) }}
+			{{ render_field(form.capacity) }}
+		</table>
+		<p><input type="submit" value="Submit" />
+	</form>
+
+	<h2>Classrooms:</h2>
+	<table id="customers">
+		<tr>
+			<th>name</th>
+			<th>capacity</th>
+		</tr>
+		{% for classroom in building.classrooms %}
+		<tr>
+			<td><a href="{{ url_for('admin.classroom', classroom_id=classroom.id) }}">{{ classroom.name }}</a></td>
+			<td>{{ classroom.capacity }}</td>
+		</tr>
+		{% endfor %}
+	</table>
+</div>
+{% endblock %}

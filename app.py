@@ -9,6 +9,7 @@ from werkzeug.useragents import UserAgent
 import utils
 import config
 
+from views.admin import admin
 from models import *
 from validate import *
 
@@ -42,6 +43,8 @@ app.jinja_env.globals['generate_login_url'] = generate_login_url
 app.jinja_env.globals['generate_logout_url'] = generate_logout_url
 app.jinja_env.globals['generate_register_url'] = generate_register_url
 app.jinja_env.globals['generate_mail_url'] = generate_mail_url
+
+app.register_blueprint(admin, url_prefix='/admin')
 
 app.wsgi_app = SessionMiddleware(app.wsgi_app, \
         FilesystemSessionStore(), \

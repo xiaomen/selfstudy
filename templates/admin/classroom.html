@@ -1,0 +1,44 @@
+{% extends "admin/layout.html" %}
+{% from "admin/helper.html" import render_field %}
+
+{% block content %}
+
+<div>
+	<div>
+		<span style="float:right"><a href="{{ url_for('admin.building', building_id=classroom.building.id) }}">Return</a></span>
+		<h1>{{ classroom.name }}</h2>
+	</div>
+
+	<form method="POST">
+		<table>
+			{{ render_field(form.start_week) }}
+			{{ render_field(form.end_week) }}
+			{{ render_field(form.day) }}
+			{{ render_field(form.start_time) }}
+			{{ render_field(form.end_time) }}
+			{{ render_field(form.week_sign) }}
+		</table>
+		<p><input type="submit" value="Submit" />
+	</form>
+
+	<h2>Courses:</h2>
+	<table id="customers">
+		<tr>
+			<th>start_week</th>
+			<th>end_week</th>
+			<th>day</th>
+			<th>time</th>
+			<th>week_sign</th>
+		</tr>
+		{% for course in classroom.courses %}
+		<tr>
+			<td>{{ course.start_week }}</td>
+			<td>{{ course.end_week }}</td>
+			<td>{{ course.day }}</td>
+			<td>{{ course.time }}</td>
+			<td>{{ course.week_sign }}</td>
+		</tr>
+		{% endfor %}
+	</table>
+</div>
+{% endblock %}

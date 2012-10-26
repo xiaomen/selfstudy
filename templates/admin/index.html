@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div>
+	<ul>
+		{% for building in buildings %}
+		<li><a href="{{ url_for('admin.building', building_id=building.id) }}">{{ building.name }}({{ building.campus.name }})</a></li>
+		{% endfor %}
+	</ul>
+</div>
+{% endblock %}
