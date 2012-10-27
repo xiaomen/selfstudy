@@ -7,6 +7,8 @@ from flask import Blueprint, request, url_for, redirect, render_template
 from wtforms import Form, TextField, IntegerField, SelectField, validators
 
 from models import *
+from utils import *
+from config import ACCOUNT_LOGIN
 
 logger = logging.getLogger(__name__)
 
@@ -27,12 +29,14 @@ class CourseForm(Form):
     week_sign = SelectField('week_sign', choices=week_sign_choices, coerce=int)
 
 @admin.route('/', methods=['GET'])
+@login_required(need=True, next=ACCOUNT_LOGIN)
 def index():
     buildings = Building.query.all()
 
     return render_template('admin/index.html', buildings=buildings)
 
 @admin.route('/building/<int:building_id>', methods=['GET', 'POST'])
+@login_required(need=True, next=ACCOUNT_LOGIN)
 def building(building_id):
     form = ClassroomForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -49,18 +53,8 @@ def building(building_id):
     return render_template('admin/building.html', \
             building=building, form=form)
 
-
-def get_time(s):
-    s = s.split('-')
-    if len(s) == 1:
-        a = int(s[0])
-        b = a
-    if len(s) == 2:
-        a = int(s[0])
-        b = int(s[1])
-    return range(a, b + 1)
-
 @admin.route('/classroom/<int:classroom_id>', methods=['GET', 'POST'])
+@login_required(need=True, next=ACCOUNT_LOGIN)
 def classroom(classroom_id):
     form = CourseForm(request.form)
     if request.method == 'POST' and form.validate():
