@@ -119,15 +119,17 @@ def templated(template=None):
 
 @app.route('/')
 def hello():
-    return redirect(url_for('index', uni='hnu'))
+    return u'自习室升级中，敬请期待'
+    #return redirect(url_for('index', uni='hnu'))
 
 @app.route('/<uni>')
 @university_validate
 def index(uni, quantity=0):
-    today = datetime.date.today()
-    alldays = '-'.join(map(lambda x: str(x + 1), range(uni.class_quantity)))
-    return redirect(url_for('get_buildings',
-        uni=uni.no, date=today.isoformat(), classes=alldays))
+    return u'自习室升级中，敬请期待'
+    #today = datetime.date.today()
+    #alldays = '-'.join(map(lambda x: str(x + 1), range(uni.class_quantity)))
+    #return redirect(url_for('get_buildings',
+    #    uni=uni.no, date=today.isoformat(), classes=alldays))
 
 @app.route('/<uni>/buildings/<date>/<classes>')
 @get_ua
