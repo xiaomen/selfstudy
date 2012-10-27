@@ -253,10 +253,10 @@ def api_classroom_feedback(classroom_id):
     Feedback.create(g.current_user.uid, int(classroom_id))
     return 'success'
 
-@app.teardown_request
-def teardown_request(exception=None):
-    if db.session:
-        db.session.close()
+#@app.teardown_request
+#def teardown_request(exception=None):
+#    if db.session:
+#        db.session.close()
 
 @app.before_request
 def before_request():
