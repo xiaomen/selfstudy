@@ -3,8 +3,9 @@
 
 import logging
 
-from flask import Blueprint, request, url_for, redirect, render_template
-from wtforms import Form, TextField, IntegerField, SelectField, validators
+from flask import Blueprint, request, url_for, redirect, render_template, abort
+from wtforms import Form, TextField, IntegerField, SelectField, HiddenField, validators
+from wtforms.validators import ValidationError
 
 from models import *
 from utils import *
@@ -16,8 +17,19 @@ admin = Blueprint('admin', __name__)
 
 week_sign_choices = [(0, u'每周'), (1, u'单周'), (2, u'双周')]
 
+def validate_duplicated_class(form, field):
+    building = Building.query.get(form.building_id.data)
+    if not building:
+        raise ValidationError('No Building Selected')
+    for classroom in building.classrooms:
+        if form.name.data == classroom.name:
+            raise ValidationError('{0} duplicated with existing classroom'.\
+                    format(form.name.data))
+
 class ClassroomForm(Form):
-    name = TextField('name', [validators.Required()])
+    building_id = HiddenField('building_id')
+    name = TextField('name', [validators.Required(), \
+            validate_duplicated_class])
     capacity = IntegerField('capacity')
 
 class CourseForm(Form):
@@ -29,14 +41,14 @@ class CourseForm(Form):
     week_sign = SelectField('week_sign', choices=week_sign_choices, coerce=int)
 
 @admin.route('/', methods=['GET'])
-@login_required(need=True, next=ACCOUNT_LOGIN)
+@login_required(need=False, next=ACCOUNT_LOGIN)
 def index():
     buildings = Building.query.all()
 
     return render_template('admin/index.html', buildings=buildings)
 
 @admin.route('/building/<int:building_id>', methods=['GET', 'POST'])
-@login_required(need=True, next=ACCOUNT_LOGIN)
+@login_required(need=False, next=ACCOUNT_LOGIN)
 def building(building_id):
     form = ClassroomForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -50,11 +62,12 @@ def building(building_id):
         return redirect(url_for('admin.building', building_id=building_id))
 
     building = Building.query.get(building_id)
+    form.building_id.data = building_id
     return render_template('admin/building.html', \
             building=building, form=form)
 
 @admin.route('/classroom/<int:classroom_id>', methods=['GET', 'POST'])
-@login_required(need=True, next=ACCOUNT_LOGIN)
+@login_required(need=False, next=ACCOUNT_LOGIN)
 def classroom(classroom_id):
     form = CourseForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -73,3 +86,15 @@ def classroom(classroom_id):
     classroom = Classroom.query.get(classroom_id)
     return render_template('admin/classroom.html', \
             classroom=classroom, form=form)
+
+@admin.route('/course/<int:course_id>', methods=['POST'])
+@login_required(need=False, next=ACCOUNT_LOGIN)
+def delete_course(course_id):
+    course = Course.query.get(course_id)
+    if not course:
+        abort(404)
+    classroom_id = course.classroom.id
+    db.session.delete(course)
+    db.session.commit()
+
+    return redirect(url_for('admin.classroom', classroom_id=classroom_id))

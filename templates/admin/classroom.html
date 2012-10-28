@@ -29,6 +29,7 @@
 			<th>day</th>
 			<th>time</th>
 			<th>week_sign</th>
+			<th>action</th>
 		</tr>
 		{% for course in classroom.courses %}
 		<tr>
@@ -37,6 +38,11 @@
 			<td>{{ course.day }}</td>
 			<td>{{ course.time }}</td>
 			<td>{{ course.week_sign }}</td>
+			<td>
+				<form method="POST" action="{{ url_for('admin.delete_course', course_id=course.id) }}">
+					<input type="submit" value="Delete" />
+				</form>
+			</td>
 		</tr>
 		{% endfor %}
 	</table>
