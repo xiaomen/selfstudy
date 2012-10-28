@@ -33,7 +33,7 @@ CREATE TABLE `classroom` (
   PRIMARY KEY (`id`),
   KEY `building_id` (`building_id`),
   CONSTRAINT `classroom_ibfk_1` FOREIGN KEY (`building_id`) REFERENCES `building` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -47,8 +47,8 @@ CREATE TABLE `course` (
   `week_sign` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `classroom_id` (`classroom_id`),
-  CONSTRAINT `course_ibfk_1` FOREIGN KEY (`classroom_id`) REFERENCES `course` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+  CONSTRAINT `course_ibfk_1` FOREIGN KEY (`classroom_id`) REFERENCES `classroom` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
