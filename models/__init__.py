@@ -115,3 +115,8 @@ class Feedback(db.Model):
         f = Feedback(uid, classroom_id, occupy)
         db.session.add(f)
         db.session.commit()
+
+class Admin(db.Model):
+    __tablename__ = 'admin'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    uid = db.Column(db.Integer, nullable=False, index=True)

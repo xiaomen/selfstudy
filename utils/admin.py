@@ -2,6 +2,7 @@ from functools import wraps
 from flask import g, url_for, redirect, request, abort
 from config import ACCOUNT_LOGIN
 from urllib import quote
+from models import Admin
 
 def login_required(next=None, need=True, *args, **kwargs):
     def _login_required(f):
@@ -16,6 +17,10 @@ def login_required(next=None, need=True, *args, **kwargs):
                         url = '{0}?{1}={2}'.format(next, 'redirect', quote(request.url))
                     return redirect(url)
                 return redirect('/')
+            if g.current_user:
+                admin = Admin.query.filter_by(uid=g.current_user.uid).first()
+                if not admin:
+                    abort(403)
             return f(*args, **kwargs)
         return _
     return _login_required
