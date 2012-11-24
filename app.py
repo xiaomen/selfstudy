@@ -6,10 +6,10 @@ from flask import Flask, redirect, url_for,\
 from functools import wraps
 from werkzeug.useragents import UserAgent
 
-import utils
 import config
 
 from views.admin import admin
+from utils import *
 from models import *
 from validate import *
 
@@ -118,13 +118,37 @@ def templated(template=None):
 
 
 @app.route('/')
-def hello():
+def index():
     return u'自习室升级中，敬请期待'
 
 @app.route('/<uni>')
 @university_validate
 def index(uni, quantity=0):
     return u'自习室升级中，敬请期待'
+
+@app.route('/<uni>/buildings/<date>/<classes>')
+@templated('buildings.html')
+def buildings(uni, date, classes):
+    university = University.query.filter_by(no=uni)
+    try:
+        date = str2date(date)
+    except:
+        abort(404)
+
+    if not university:
+        abort(404)
+
+    class_list = [int(x) for x in classes.split('-')]
+    count=dict()
+    for building in Building.query.all():
+
+        count[b.id] = 0
+    return dict(university=university, 
+            dates=get_date_filters(),
+            query_date=date,
+            query_class=classes,
+            periods=university.periods,
+            count=count)
 
 @app.before_request
 def before_request():

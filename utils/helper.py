@@ -2,10 +2,6 @@
 
 import datetime
 
-from flask import g
-
-from sheep.api.open import rpc
-
 days = [u'一', u'二', u'三', u'四', u'五', u'六', u'日']
 def str2date(date_str):
     return datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
@@ -46,3 +42,9 @@ def get_interval_date(length):
     names = map(lambda x: u'周{0}'.format(days[x.isoweekday() - 1]), dates)
     names[0] = u'今天'
     return zip(dates, names)
+
+def get_week_and_day(date, university):
+    t = date - university.start_date
+    if t == 0:
+        return 1, 7
+    return 2 + (t.days - 1) / 7, date.weekday() + 1
