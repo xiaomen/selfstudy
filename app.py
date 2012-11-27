@@ -119,10 +119,10 @@ def templated(template=None):
 
 @app.route('/')
 def index():
-    return redirect(url_for('index', uni='hnu'))
+    return redirect(url_for('uni_index', uni='hnu'))
 
 @app.route('/<uni>')
-def index(uni, quantity=0):
+def uni_index(uni, quantity=0):
     uni = get_university_by_no(uni)
     if not uni:
         abort(404)
