@@ -6,7 +6,7 @@ sentry_dsn: http://177e3b7311854445988acc44b03c52a1:ad81eac6f6934a6ba1401062f34c
 
 handlers:
 - url: /favicon.ico
-  static_files: static/ali.png
+  static_files: static/img/logo.png
 - url: /static/(.*)
   static_files: static/\1
 - url: /.*

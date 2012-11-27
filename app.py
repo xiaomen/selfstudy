@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
-import datetime
+from datetime import date, datetime
 from flask import Flask, redirect, url_for,\
         abort, request, render_template, g
 from functools import wraps
@@ -8,7 +8,7 @@ from werkzeug.useragents import UserAgent
 
 import config
 
-from views.admin import admin
+from views.admin import administer
 from utils import *
 from models import *
 from validate import *
@@ -44,7 +44,7 @@ app.jinja_env.globals['generate_logout_url'] = generate_logout_url
 app.jinja_env.globals['generate_register_url'] = generate_register_url
 app.jinja_env.globals['generate_mail_url'] = generate_mail_url
 
-app.register_blueprint(admin, url_prefix='/admin')
+app.register_blueprint(administer, url_prefix='/admin')
 
 app.wsgi_app = SessionMiddleware(app.wsgi_app, \
         FilesystemSessionStore(), \
@@ -56,8 +56,8 @@ init_db(app)
 @app.template_filter('format_date')
 def format_date(select):
     year, month, day = map(int, str(select).split("-"))
-    select = datetime.datetime(year, month, day).date()
-    today = datetime.datetime.now()
+    select = datetime(year, month, day).date()
+    today = datetime.now()
     delta = select - today.date()
     if delta.days == 0:
         return u"今日"
@@ -119,17 +119,22 @@ def templated(template=None):
 
 @app.route('/')
 def index():
-    return u'自习室升级中，敬请期待'
+    return redirect(url_for('index', uni='hnu'))
 
 @app.route('/<uni>')
-@university_validate
 def index(uni, quantity=0):
-    return u'自习室升级中，敬请期待'
+    uni = get_university_by_no(uni)
+    if not uni:
+        abort(404)
+    today = date.today()
+    alldays = '-'.join(map(lambda x: str(x + 1), range(uni.class_quantity)))
+    return redirect(url_for('buildings',
+        uni=uni.no, date=today.isoformat(), classes=alldays))
 
 @app.route('/<uni>/buildings/<date>/<classes>')
 @templated('buildings.html')
 def buildings(uni, date, classes):
-    university = University.query.filter_by(no=uni)
+    university = get_university_by_no(uni)
     try:
         date = str2date(date)
     except:
@@ -141,14 +146,61 @@ def buildings(uni, date, classes):
     class_list = [int(x) for x in classes.split('-')]
     count=dict()
     for building in Building.query.all():
+        week, day = get_week_and_day(date, university)
+        count[building.id] = get_free_count(building, week, day, class_list)
 
-        count[b.id] = 0
     return dict(university=university, 
             dates=get_date_filters(),
             query_date=date,
             query_class=classes,
             periods=university.periods,
             count=count)
+
+@app.route('/<uni>/building/<bld>/<date>/<classes>')
+@templated('building.html')
+def get_building(uni, bld, date, classes):
+    university = get_university_by_no(uni)
+    building = get_building_by_id(bld)
+    try:
+        date = str2date(date)
+    except:
+        abort(404)
+
+    if not university or not building:
+        abort(404)
+
+    class_list = [int(x) for x in classes.split('-')]
+    
+    week, day = get_week_and_day(date, university)
+    free_classrooms = get_free_classrooms(building, week, day, class_list)
+    return dict(university=university,
+            dates=get_date_filters(),
+            query_date=date,
+            query_class=classes,
+            periods=university.periods,
+            building=building,
+            classrooms=free_classrooms)
+
+@app.route('/<uni>/classroom/<clr>')
+@templated('classroom.html')
+def get_classroom(uni, clr):
+    university = get_university_by_no(uni)
+    classroom = get_classroom_by_id(clr)
+    if not university or not classroom:
+        abort(404)
+    dates = get_interval_date(7)
+    
+    occupations = []
+    for d in dates:
+        week, day = get_week_and_day(d[0], university)
+        occupies = get_occupy_time(classroom, week, day)
+        occupations.append((d[0], d[1], occupies))
+
+    return dict(university=university,
+            classroom=classroom,
+            query_date=request.args.get('date', ''),
+            query_class=request.args.get('class', ''),
+            occupations=occupations)
 
 @app.before_request
 def before_request():

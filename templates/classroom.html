@@ -29,7 +29,7 @@
             <tr>
                 <td class="lesson-number">{{ i }}</td>
                 {% for o in occupations %}
-                <td {% if i not in o[2] %}class="nofree" title="有课"{% else %}title="可自习"{% endif %}>&nbsp;</td>
+                <td {% if i in o[2] %}class="nofree" title="有课"{% else %}title="可自习"{% endif %}>&nbsp;</td>
                 {% endfor %}
             </tr>
             {% endfor %}

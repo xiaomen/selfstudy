@@ -9,13 +9,13 @@
 </div>
 <div class="result-body">
 {% for campus in university.campuses %}
-{% if university.campuses | length > 1 %}
+{% if university.campuses.all() | length > 1 %}
     <div class="result-campus">{{ campus.name }}</div>
 {% endif %}
     <ul class="result-list">
 {% for building in campus.buildings %}
         <li>
-            <a href="/{{ university.no}}/building/{{ building.no }}/{{ query_date.isoformat() }}/{{ query_class }}">{{ building.name }}({{ count[building.id] }})</a>
+            <a href="/{{ university.no}}/building/{{ building.id }}/{{ query_date.isoformat() }}/{{ query_class }}">{{ building.name }}({{ count[building.id] }})</a>
         </li>
 {% endfor %}
     </ul>

@@ -13,7 +13,7 @@ from config import ACCOUNT_LOGIN
 
 logger = logging.getLogger(__name__)
 
-admin = Blueprint('admin', __name__)
+administer = Blueprint('admin', __name__)
 
 week_sign_choices = [(0, u'每周'), (1, u'单周'), (2, u'双周')]
 
@@ -40,14 +40,14 @@ class CourseForm(Form):
     end_time = IntegerField('end_time', [validators.Required()])
     week_sign = SelectField('week_sign', choices=week_sign_choices, coerce=int)
 
-@admin.route('/', methods=['GET'])
+@administer.route('/', methods=['GET'])
 @login_required(need=True, next=ACCOUNT_LOGIN)
 def index():
     buildings = Building.query.all()
 
     return render_template('admin/index.html', buildings=buildings)
 
-@admin.route('/building/<int:building_id>', methods=['GET', 'POST'])
+@administer.route('/building/<int:building_id>', methods=['GET', 'POST'])
 @login_required(need=True, next=ACCOUNT_LOGIN)
 def building(building_id):
     form = ClassroomForm(request.form)
@@ -66,7 +66,7 @@ def building(building_id):
     return render_template('admin/building.html', \
             building=building, form=form)
 
-@admin.route('/classroom/<int:classroom_id>', methods=['GET', 'POST'])
+@administer.route('/classroom/<int:classroom_id>', methods=['GET', 'POST'])
 @login_required(need=True, next=ACCOUNT_LOGIN)
 def classroom(classroom_id):
     form = CourseForm(request.form)
@@ -87,7 +87,7 @@ def classroom(classroom_id):
     return render_template('admin/classroom.html', \
             classroom=classroom, form=form)
 
-@admin.route('/course/<int:course_id>', methods=['POST'])
+@administer.route('/course/<int:course_id>', methods=['POST'])
 @login_required(need=True, next=ACCOUNT_LOGIN)
 def delete_course(course_id):
     course = Course.query.get(course_id)

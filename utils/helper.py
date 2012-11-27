@@ -47,4 +47,4 @@ def get_week_and_day(date, university):
     t = date - university.start_date
     if t == 0:
         return 1, 7
-    return 2 + (t.days - 1) / 7, date.weekday() + 1
+    return 1 + t.days / 7, date.weekday() + 1

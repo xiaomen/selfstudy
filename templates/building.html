@@ -12,7 +12,7 @@
     <ul class="result-list">
     {% for c in classrooms %}
         <li>
-            <a href="/{{ university.no }}/classroom/{{ c.no }}?date={{ query_date.isoformat()}}&class={{ query_class }}">{{ c.name }}</a>
+            <a href="/{{ university.no }}/classroom/{{ c.id }}?date={{ query_date.isoformat()}}&class={{ query_class }}">{{ c.name }}</a>
         </li>
     {% endfor %}
     </ul>
