@@ -146,7 +146,6 @@ def buildings(uni, date, classes):
     class_list = [int(x) for x in classes.split('-')]
     count=dict()
     for building in Building.query.all():
-        print building.name
         week, day = get_week_and_day(date, university)
         count[building.id] = get_free_count(building, week, day, class_list)
 
