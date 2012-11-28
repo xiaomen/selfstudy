@@ -211,4 +211,5 @@ def before_request():
     g.current_user = get_current_user(g.session)
     if g.current_user:
         logger.info(type(g.current_user.name))
+        logger.info(isinstance(g.current_user.name, unicode))
         g.unread_mail_count = lambda: get_unread_mail_count(g.current_user.uid)
