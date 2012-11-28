@@ -149,11 +149,10 @@ def buildings(uni, date, classes):
     if not university:
         abort(404)
 
-    class_list = [int(x) for x in classes.split('-')]
     count=dict()
     for building in get_buildings():
         week, day = get_week_and_day(date, university)
-        count[building.id] = get_free_count(building, week, day, class_list)
+        count[building.id] = get_free_count(building, week, day, classes)
 
     return dict(university=university, 
             dates=get_date_filters(),
@@ -176,10 +175,8 @@ def get_building(uni, bld, date, classes):
     if not university or not building:
         abort(404)
 
-    class_list = [int(x) for x in classes.split('-')]
-    
     week, day = get_week_and_day(date, university)
-    free_classrooms = get_free_classrooms(building, week, day, class_list)
+    free_classrooms = get_free_classrooms(building.id, building, week, day, classes)
     return dict(university=university,
             dates=get_date_filters(),
             query_date=date,
