@@ -16,14 +16,18 @@ def get_university_by_no(uni_no):
 def get_buildings():
     buildings = Building.query.all()
     for building in buildings:
-        building.classroom_list = building.classrooms.order_by(Classroom.name).all()
+        building.classroom_list = Classroom.query \
+                .filter_by(building_id=bulding.id) \
+                .order_by(Classroom.name).all()
         building.campus = building.campus
     return buildings
 
 @cache('selfstudy:building:{bid}', CACHE_EXPIRE_TIME)
 def get_building_by_id(bid):
     building = Building.query.get(bid)
-    building.classroom_list = building.classrooms.all()
+    building.classroom_list = Classroom.query \
+                .filter_by(building_id=bid) \
+                .order_by(Classroom.name).all()
     building.campus = building.campus
     return building
 
@@ -42,7 +46,7 @@ def get_free_count(building, week, day, classes):
 @cache('selfstudy:free:{bid}:{week}:{day}:{classes}', CACHE_EXPIRE_TIME)
 def get_free_classrooms(bid, building, week, day, classes):
     classes = [int(x) for x in classes.split('-')]
-    alls = set(building.classroom_list)
+    alls = building.classroom_list
     occupies = set()
     for classroom, course in db.session.query(Classroom, Course). \
             filter(Classroom.building_id==bid). \
