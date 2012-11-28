@@ -16,7 +16,7 @@ def get_university_by_no(uni_no):
 def get_buildings():
     buildings = Building.query.all()
     for building in buildings:
-        building.classroom_list = building.classrooms.all()
+        building.classroom_list = building.classrooms.order_by(Classroom.name).all()
         building.campus = building.campus
     return buildings
 
@@ -41,8 +41,6 @@ def get_free_count(building, week, day, classes):
 
 @cache('selfstudy:free:{bid}:{week}:{day}:{classes}', CACHE_EXPIRE_TIME)
 def get_free_classrooms(bid, building, week, day, classes):
-    
-    print bid
     classes = [int(x) for x in classes.split('-')]
     alls = set(building.classroom_list)
     occupies = set()
