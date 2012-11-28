@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 import json
 from datetime import date, datetime
 from flask import Flask, redirect, url_for,\
@@ -24,6 +25,8 @@ LESSON_FORMAT = {
     '5-6-7-8' : u'下午', 
     '9-10-11' : u'晚间'
 }
+
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 app.debug = config.DEBUG
@@ -207,4 +210,5 @@ def before_request():
     g.session = request.environ['xiaomen.session']
     g.current_user = get_current_user(g.session)
     if g.current_user:
+        logger.info(type(g.current_user.name))
         g.unread_mail_count = lambda: get_unread_mail_count(g.current_user.uid)
