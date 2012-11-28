@@ -8,12 +8,12 @@
     <span class="right-arrow"></span>
 </div>
 <div class="result-body">
-{% for campus in university.campuses %}
-{% if university.campuses.all() | length > 1 %}
+{% for campus in university.campus_list %}
+{% if university.campus_list | length > 1 %}
     <div class="result-campus">{{ campus.name }}</div>
 {% endif %}
     <ul class="result-list">
-{% for building in campus.buildings %}
+{% for building in campus.building_list %}
         <li>
             <a href="/{{ university.no}}/building/{{ building.id }}/{{ query_date.isoformat() }}/{{ query_class }}">{{ building.name }}({{ count[building.id] }})</a>
         </li>

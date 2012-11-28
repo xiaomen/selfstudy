@@ -7,16 +7,16 @@
         <h2>查询结果</h2>
     </div>
     <div class="result-content">
-        {% for campus in university.campuses %}
-        {% if university.campuses | length %}
+        {% for campus in university.campus_list %}
+        {% if university.campus_list | length %}
         <div class="campus-name">
             <span>{{ campus.name }}</span>
         </div>
         {% endif %}
         <div class="buildings-list result-list">
             <ul>
-                {% for building in campus.buildings %}
-                <li><a href="/{{ university.no}}/building/{{ building.no }}/{{ query_date.isoformat() }}/{{ query_class }}">{{ building.name }}({{ count[building.id] }})</a></li>
+                {% for building in campus.building_list %}
+                <li><a href="/{{ university.no}}/building/{{ building.id }}/{{ query_date.isoformat() }}/{{ query_class }}">{{ building.name }}({{ count[building.id] }})</a></li>
                 {% endfor %}
             </ul>
         </div>

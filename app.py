@@ -126,6 +126,8 @@ def index():
 
 @app.route('/<uni>')
 def uni_index(uni, quantity=0):
+    if uni == 'favicon.ico':
+        abort(404)
     uni = get_university_by_no(uni)
     if not uni:
         abort(404)
@@ -135,6 +137,7 @@ def uni_index(uni, quantity=0):
         uni=uni.no, date=today.isoformat(), classes=alldays))
 
 @app.route('/<uni>/buildings/<date>/<classes>')
+@get_ua
 @templated('buildings.html')
 def buildings(uni, date, classes):
     university = get_university_by_no(uni)
@@ -148,7 +151,7 @@ def buildings(uni, date, classes):
 
     class_list = [int(x) for x in classes.split('-')]
     count=dict()
-    for building in Building.query.all():
+    for building in get_buildings():
         week, day = get_week_and_day(date, university)
         count[building.id] = get_free_count(building, week, day, class_list)
 
@@ -159,7 +162,8 @@ def buildings(uni, date, classes):
             periods=university.periods,
             count=count)
 
-@app.route('/<uni>/building/<bld>/<date>/<classes>')
+@app.route('/<uni>/building/<int:bld>/<date>/<classes>')
+@get_ua
 @templated('building.html')
 def get_building(uni, bld, date, classes):
     university = get_university_by_no(uni)
@@ -185,6 +189,7 @@ def get_building(uni, bld, date, classes):
             classrooms=free_classrooms)
 
 @app.route('/<uni>/classroom/<int:clr>')
+@get_ua
 @templated('classroom.html')
 def get_classroom(uni, clr):
     university = get_university_by_no(uni)
