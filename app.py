@@ -184,7 +184,7 @@ def get_building(uni, bld, date, classes):
             building=building,
             classrooms=free_classrooms)
 
-@app.route('/<uni>/classroom/<clr>')
+@app.route('/<uni>/classroom/<int:clr>')
 @templated('classroom.html')
 def get_classroom(uni, clr):
     university = get_university_by_no(uni)
@@ -196,7 +196,7 @@ def get_classroom(uni, clr):
     occupations = []
     for d in dates:
         week, day = get_week_and_day(d[0], university)
-        occupies = get_occupy_time(classroom, week, day)
+        occupies = get_occupy_time(clr, week, day)
         occupations.append((d[0], d[1], occupies))
 
     return dict(university=university,
