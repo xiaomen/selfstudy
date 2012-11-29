@@ -7,6 +7,8 @@ CACHE_EXPIRE_TIME = 86400 * 30
 @cache('selfstudy:university:{uni_no}', CACHE_EXPIRE_TIME)
 def get_university_by_no(uni_no):
     university = University.query.filter_by(no=uni_no).first()
+    if not university:
+        return None
     university.campus_list = university.campuses.all()
     for campus in university.campus_list:
         campus.building_list = campus.buildings.all()
@@ -17,7 +19,7 @@ def get_buildings():
     buildings = Building.query.all()
     for building in buildings:
         building.classroom_list = Classroom.query \
-                .filter_by(building_id=bulding.id) \
+                .filter_by(building_id=building.id) \
                 .order_by(Classroom.name).all()
         building.campus = building.campus
     return buildings
@@ -25,6 +27,8 @@ def get_buildings():
 @cache('selfstudy:building:{bid}', CACHE_EXPIRE_TIME)
 def get_building_by_id(bid):
     building = Building.query.get(bid)
+    if not building:
+        return None
     building.classroom_list = Classroom.query \
                 .filter_by(building_id=bid) \
                 .order_by(Classroom.name).all()
@@ -34,7 +38,8 @@ def get_building_by_id(bid):
 @cache('selfstudy:classroom:{cid}', CACHE_EXPIRE_TIME)
 def get_classroom_by_id(cid):
     classroom = Classroom.query.get(cid)
-
+    if not classroom:
+        return None
     classroom.building = classroom.building
     classroom.building.campus = classroom.building.campus
 
