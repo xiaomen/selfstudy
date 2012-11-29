@@ -2,7 +2,7 @@ from models import *
 from sheep.api.cache import cache
 from sqlalchemy import and_
 
-CACHE_EXPIRE_TIME = 60#86400 * 30
+CACHE_EXPIRE_TIME = 86400 * 30
 
 @cache('selfstudy:university:{uni_no}', CACHE_EXPIRE_TIME)
 def get_university_by_no(uni_no):
@@ -59,12 +59,12 @@ def get_free_classrooms(bid, building, week, day, classes):
             or course.week_sign == 2 and week % 2 == 0:
                 occupies.add(classroom.id)
                 continue
-    db.session.close()
     ret = []
     for a in alls:
         if a.id in occupies:
             continue
         ret.append(a)
+    db.session.close()
     return ret
 
 @cache('selfstudy:{classroom_id}:occupy:{week}:{day}', 86400 * 30)
