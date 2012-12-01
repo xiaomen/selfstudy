@@ -17,6 +17,12 @@
     {% endfor %}
     </ul>
 </div>
+<div>
+	<form action="/{{ university.no }}/building/{{ building.id }}/checkin" method="POST">
+		<textarea name="message" rows="10" col="30"></textarea>
+		<input type="submit" value="CheckIn" />
+	</form>
+</div>
 <div class="back-btn">
     <a href="/{{ university.no }}/buildings/{{ query_date.isoformat() }}/{{ query_class }}">返回教学楼列表</a>
 </div>

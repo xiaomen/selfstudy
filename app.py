@@ -185,6 +185,18 @@ def get_building(uni, bld, date, classes):
             building=building,
             classrooms=free_classrooms)
 
+@app.route('/<uni>/building/<int:bld>/checkin', methods=["GET", "POST"])
+def checkin(uni, bld):
+    if request.method == 'POST':
+        uid = g.current_user.uid
+        message = request.form.get('message', None)
+        CheckIn.create(uid, bld, None,message)
+        return "success"
+    
+    checkins = get_checkins_in_building(bld)
+    return json.dumps([ dict(uid=x.uid, message=x.message) for x in checkins])
+
+
 @app.route('/<uni>/classroom/<int:clr>')
 @get_ua
 @templated('classroom.html')

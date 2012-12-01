@@ -72,7 +72,7 @@ def get_free_classrooms(bid, building, week, day, classes):
     db.session.close()
     return ret
 
-@cache('selfstudy:{classroom_id}:occupy:{week}:{day}', 86400 * 30)
+@cache('selfstudy:{classroom_id}:occupy:{week}:{day}', CACHE_EXPIRE_TIME)
 def get_occupy_time(classroom_id, week, day):
     courses = Course.query.filter_by(classroom_id=classroom_id, day=day). \
             filter(and_(Course.start_week <= week, week <= Course.end_week)). \
@@ -84,3 +84,7 @@ def get_occupy_time(classroom_id, week, day):
             or course.week_sign == 2 and week % 2 == 0:
                 occupies.append(course.time)
     return occupies
+
+#@cache('selfstudy:{building_id}:checkins', CACHE_EXPIRE_TIME)
+def get_checkins_in_building(building_id):
+    return CheckIn.query.filter_by(building_id=building_id).all()

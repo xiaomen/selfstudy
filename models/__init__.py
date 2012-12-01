@@ -120,3 +120,24 @@ class Admin(db.Model):
     __tablename__ = 'admin'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     uid = db.Column(db.Integer, nullable=False, index=True)
+
+class CheckIn(db.Model):
+    __tablename__ = 'checkin'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    uid = db.Column(db.Integer, nullable=False, index=True)
+    building_id = db.Column(db.Integer, nullable=False, index=True)
+    classroom_id = db.Column(db.Integer, nullable=True, index=True)
+    timestamp = db.Column(db.DateTime, default=datetime.now)
+    message = db.Column(db.String(100), nullable=True, default='')
+
+    def __init__(self, uid, building_id, classroom_id, message):
+        self.uid = uid
+        self.building_id = building_id
+        self.classroom_id = classroom_id
+        self.message = message
+
+    @staticmethod
+    def create(uid, building_id, classroom_id, message):
+        c = CheckIn(uid, building_id, classroom_id, message)
+        db.session.add(c)
+        db.session.commit()
