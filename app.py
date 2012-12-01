@@ -177,15 +177,20 @@ def get_building(uni, bld, date, classes):
 
     week, day = get_week_and_day(date, university)
     free_classrooms = get_free_classrooms(building.id, building, week, day, classes)
+    checkins = get_checkins_in_building(bld)
+
     return dict(university=university,
             dates=get_date_filters(),
             query_date=date,
             query_class=classes,
             periods=university.periods,
             building=building,
-            classrooms=free_classrooms)
+            classrooms=free_classrooms, 
+            checkins=checkins)
 
 @app.route('/<uni>/building/<int:bld>/checkin', methods=["GET", "POST"])
+@login_required(need=True, next=ACCOUNT_LOGIN)
+@templated('checkin.html')
 def checkin(uni, bld):
     if request.method == 'POST':
         uid = g.current_user.uid
@@ -193,8 +198,14 @@ def checkin(uni, bld):
         CheckIn.create(uid, bld, None,message)
         return "success"
     
-    checkins = get_checkins_in_building(bld)
-    return json.dumps([ dict(uid=x.uid, message=x.message) for x in checkins])
+    university = get_university_by_no(uni)
+    building = get_building_by_id(bld)
+
+    if not building or not university:
+        abort(404)
+
+    return dict(building = building, 
+            university = university)
 
 
 @app.route('/<uni>/classroom/<int:clr>')

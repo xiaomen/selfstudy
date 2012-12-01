@@ -41,14 +41,14 @@ class CourseForm(Form):
     week_sign = SelectField('week_sign', choices=week_sign_choices, coerce=int)
 
 @administer.route('/', methods=['GET'])
-@login_required(need=True, next=ACCOUNT_LOGIN)
+@login_required(need=True, next=ACCOUNT_LOGIN, admin=True)
 def index():
     buildings = Building.query.all()
 
     return render_template('admin/index.html', buildings=buildings)
 
 @administer.route('/building/<int:building_id>', methods=['GET', 'POST'])
-@login_required(need=True, next=ACCOUNT_LOGIN)
+@login_required(need=True, next=ACCOUNT_LOGIN, admin=True)
 def building(building_id):
     form = ClassroomForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -67,7 +67,7 @@ def building(building_id):
             building=building, form=form)
 
 @administer.route('/classroom/<int:classroom_id>', methods=['GET', 'POST'])
-@login_required(need=True, next=ACCOUNT_LOGIN)
+@login_required(need=True, next=ACCOUNT_LOGIN, admin=True)
 def classroom(classroom_id):
     form = CourseForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -88,7 +88,7 @@ def classroom(classroom_id):
             classroom=classroom, form=form)
 
 @administer.route('/course/<int:course_id>', methods=['POST'])
-@login_required(need=True, next=ACCOUNT_LOGIN)
+@login_required(need=True, next=ACCOUNT_LOGIN, admin=True)
 def delete_course(course_id):
     course = Course.query.get(course_id)
     if not course:

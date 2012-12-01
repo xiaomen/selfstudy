@@ -19,9 +19,11 @@
             </ul>
         </div>
     </div>
-    <div class="clearfix" style="clear: both"></div>
-    <div class="back-btn">
-        <a href="/{{ university.no }}/buildings/{{ query_date.isoformat() }}/{{ query_class }}">返回上一页</a>
-    </div>
+    <div class="clearfix"></div>
+</div>
+<div class="back-btn">
+    <a class="r btn" href="/{{ university.no }}/building/{{ building.id }}/checkin">签到</a>
+    <a class="r btn btn-gray" href="/{{ university.no }}/buildings/{{ query_date.isoformat() }}/{{ query_class }}">返回</a>
+    <div class="clearfix"></div>
 </div>
 {% endblock %}
