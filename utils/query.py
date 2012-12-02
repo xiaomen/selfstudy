@@ -1,6 +1,12 @@
+import json
+
 from models import *
+
 from sheep.api.cache import cache
+from sheep.api.open import rpc
+
 from sqlalchemy import and_
+from sqlalchemy.sql.expression import desc
 
 CACHE_EXPIRE_TIME = 86400 * 30
 
@@ -87,4 +93,19 @@ def get_occupy_time(classroom_id, week, day):
 
 #@cache('selfstudy:{building_id}:checkins', CACHE_EXPIRE_TIME)
 def get_checkins_in_building(building_id):
-    return CheckIn.query.filter_by(building_id=building_id).all()
+    return CheckIn.query.filter_by(building_id=building_id) \
+            .order_by(desc(CheckIn.timestamp)).all()
+
+class Obj(object):
+    pass
+
+def get_user(uid):
+    r = rpc('account', 'api/people/{0}'.format(uid))
+    if r.get('status', None) == 'ok':
+        user = Obj()
+        user.uid = r.get('uid', None)
+        user.name = r.get('name', None)
+        user.domain = r.get('domain', None)
+    else:
+        user = None
+    return user
