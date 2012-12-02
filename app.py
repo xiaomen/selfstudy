@@ -18,6 +18,7 @@ from sheep.api.statics import static_files
 from sheep.api.sessions import SessionMiddleware, \
     FilesystemSessionStore
 from sheep.api.users import *
+from sheep.api.open import rpc
 
 LESSON_FORMAT = {
     '1-2-3-4-5-6-7-8-9-10-11' : u'全天', 
