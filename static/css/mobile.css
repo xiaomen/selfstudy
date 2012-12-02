@@ -106,7 +106,7 @@
 }
 
 .back-btn {
-    margin: 20px 0; 
+    margin: 20px 10px; 
 }
 
 .back-btn > .btn {
@@ -189,4 +189,45 @@
 
 .checkin-list {
     margin: 0 10px; 
+    list-style: none; 
+    padding: 0; 
+    border-bottom: 1px solid #3999CC; 
+}
+
+.checkin-status {
+    border-top: 1px solid #3999CC; 
+    padding: 10px 0; 
+    min-height: 50px; 
+}
+
+.checkin-status .checkin-user-avatar {
+    float: left; 
+}
+
+.checkin-status .checkin-message {
+    margin-left: 60px; 
+}
+
+.checkin-status .checkin-meta {
+    font-size: 0.85em; 
+}
+
+.checkin-status .checkin-meta .checkin-username {
+    color: #777; 
+}
+
+.checkin-status .checkin-meta .date {
+    color: #3999CC; 
+}
+
+.checkin-status .checkin-message-body {
+    margin-top: 5px; 
+}
+
+.checkin-nobody {
+    text-align: center; 
+}
+.checkin-nobody a {
+    text-decoration: none; 
+    color: #3999CC; 
 }

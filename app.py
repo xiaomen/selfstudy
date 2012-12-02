@@ -46,6 +46,7 @@ app.jinja_env.globals['generate_login_url'] = generate_login_url
 app.jinja_env.globals['generate_logout_url'] = generate_logout_url
 app.jinja_env.globals['generate_register_url'] = generate_register_url
 app.jinja_env.globals['generate_mail_url'] = generate_mail_url
+app.jinja_env.filters['timeago'] = timeago
 
 app.register_blueprint(administer, url_prefix='/admin')
 
