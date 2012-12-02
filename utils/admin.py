@@ -4,7 +4,7 @@ from config import ACCOUNT_LOGIN
 from urllib import quote
 from models import Admin
 
-def login_required(next=None, need=True, *args, **kwargs):
+def login_required(next=None, need=True, admin=False, *args, **kwargs):
     def _login_required(f):
         @wraps(f)
         def _(*args, **kwargs):
@@ -17,9 +17,9 @@ def login_required(next=None, need=True, *args, **kwargs):
                         url = '{0}?{1}={2}'.format(next, 'redirect', quote(request.url))
                     return redirect(url)
                 return redirect('/')
-            if g.current_user:
-                admin = Admin.query.filter_by(uid=g.current_user.uid).first()
-                if not admin:
+            if g.current_user and admin:
+                admin_query = Admin.query.filter_by(uid=g.current_user.uid).first()
+                if not admin_query:
                     abort(403)
             return f(*args, **kwargs)
         return _

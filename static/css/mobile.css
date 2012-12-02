@@ -1,7 +1,7 @@
 .query-box {
     padding: 0 20px; 
     margin-top: 20px; 
-    border-bottom: 1px solid #3999CC; 
+    border-bottom: 2px solid #3999CC; 
 }
 
 .query-title {
@@ -50,7 +50,7 @@
 }
 
 .result {
-    margin: 0 20px; 
+    margin: 20px; 
 }
 
 .result-title {
@@ -62,7 +62,6 @@
 .result-title h2 {
     font-weight: normal; 
     font-size: 18px; 
-    letter-spacing: 0.2em; 
 }
 
 .result-list ul {
@@ -107,10 +106,128 @@
 }
 
 .back-btn {
-    text-align: right; 
+    margin: 20px 10px; 
 }
 
-.back-btn a {
+.back-btn > .btn {
+    margin-left: 10px; 
+}
+
+.page-title {
+    margin: 0 10px; 
+    color: #3999CC; 
+}
+
+.page-title h2 {
+    font-weight: normal; 
+    padding: 10px 0 0 0; 
+}
+
+.checkin {
+    margin: 10px; 
+}
+
+.checkin textarea {
+    width: 100%; 
+    border: 1px solid #3999CC; 
+    outline: none; 
+    background: transparent;
+    height: 100px; 
+    max-height: 100px; 
+    min-height: 100px; 
+    line-height: 27px; 
+    font-size: 17px; 
+}
+
+.btn {
+    display: block; 
+    padding: 15px 30px;
+    line-height: 17px; 
+    text-decoration: none; 
+    color: white; 
+    background-color: #3999CC; 
+    border: none;
+    outline: none; 
+}
+
+.btn:hover {
+    text-decoration: none; 
+    color: white; 
+}
+
+.btn.btn-small {
+    padding: 10px 20px; 
+}
+
+.btn.btn-gray {
+    background-color: #777; 
+}
+
+.btn:visited {
+    color: white; 
+}
+
+.form-control {
+    margin: 10px 0;
+}
+
+.l {
+    float: left; 
+}
+
+.r {
+    float: right; 
+}
+
+.green {
+    color: #74b34d; 
+}
+
+.checkin-show {
+    border-top: 2px solid #3999CC; 
+}
+
+.checkin-list {
+    margin: 0 10px; 
+    list-style: none; 
+    padding: 0; 
+    border-bottom: 1px solid #3999CC; 
+}
+
+.checkin-status {
+    border-top: 1px solid #3999CC; 
+    padding: 10px 0; 
+    min-height: 50px; 
+}
+
+.checkin-status .checkin-user-avatar {
+    float: left; 
+}
+
+.checkin-status .checkin-message {
+    margin-left: 60px; 
+}
+
+.checkin-status .checkin-meta {
+    font-size: 0.85em; 
+}
+
+.checkin-status .checkin-meta .checkin-username {
+    color: #777; 
+}
+
+.checkin-status .checkin-meta .date {
+    color: #3999CC; 
+}
+
+.checkin-status .checkin-message-body {
+    margin-top: 5px; 
+}
+
+.checkin-nobody {
+    text-align: center; 
+}
+.checkin-nobody a {
     text-decoration: none; 
     color: #3999CC; 
 }

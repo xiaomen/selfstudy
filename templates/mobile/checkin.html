@@ -1,0 +1,17 @@
+{% extends "mobile/layout.html" %}
+
+{% block content %} 
+<div class="page-title">
+    <h2>在<span class="green">{{ university.name }}{{ building.name }}</span>签到</h2>
+</div>
+<div class="checkin">
+    <form class="checkin-form" action="" method="POST">
+        <textarea name="message" placeholder="我在{{ university.name }}{{ building.name }}！"></textarea>
+        <div class="form-control">
+            <a class="btn l btn-gray" href="javascript:history.go(-1);">返回</a>
+            <button type="submit" class="btn r">签到</button>
+            <div class="clearfix"></div>
+        </div>
+    </form>
+</div>
+{% endblock %}

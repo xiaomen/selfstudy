@@ -92,9 +92,9 @@ def get_occupy_time(classroom_id, week, day):
     return occupies
 
 #@cache('selfstudy:{building_id}:checkins', CACHE_EXPIRE_TIME)
-def get_checkins_in_building(building_id):
+def get_checkins_in_building(building_id, limit = 5):
     return CheckIn.query.filter_by(building_id=building_id) \
-            .order_by(desc(CheckIn.timestamp)).all()
+            .order_by(desc(CheckIn.timestamp)).limit(5).all()
 
 class Obj(object):
     pass
@@ -106,6 +106,7 @@ def get_user(uid):
         user.uid = r.get('uid', None)
         user.name = r.get('name', None)
         user.domain = r.get('domain', None)
+        user.avatar = r.get('avatar', None)
     else:
         user = None
     return user
