@@ -9,7 +9,6 @@ def unicoded(method):
     @wraps(method)
     def wrapper(*args, **kwargs):
         reval = method(*args, **kwargs)
-        print type(reval)
         if isinstance(reval, str):
             return reval.decode('utf-8')
         return reval
