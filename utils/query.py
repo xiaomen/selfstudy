@@ -3,7 +3,7 @@ import json
 from models import *
 
 from sheep.api.cache import cache
-from sheep.api import users
+from sheep.api.users import get_user
 
 from sqlalchemy import and_
 from sqlalchemy.sql.expression import desc
@@ -95,16 +95,3 @@ def get_occupy_time(classroom_id, week, day):
 def get_checkins_in_building(building_id, limit = 5):
     return CheckIn.query.filter_by(building_id=building_id) \
             .order_by(desc(CheckIn.timestamp)).limit(5).all()
-
-def get_user(uid):
-    user = users.get_user(uid)
-    if not user:
-        return user
-    user.name = make_attr_unicode(user.name)
-    user.domain = make_attr_unicode(user.domain)
-    user.avatar = make_attr_unicode(user.avatar)
-
-def make_attr_unicode(attr):
-    if attr and isinstance(attr, str):
-        return attr.decode('utf8')
-    return attr
