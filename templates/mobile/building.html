@@ -19,9 +19,37 @@
             </ul>
         </div>
     </div>
-    <div class="clearfix" style="clear: both"></div>
-    <div class="back-btn">
-        <a href="/{{ university.no }}/buildings/{{ query_date.isoformat() }}/{{ query_class }}">返回上一页</a>
+    <div class="clearfix"></div>
+</div>
+<div class="checkin-show">
+    <div class="result-title">
+        <h2>谁在{{ building.name }}</h2>
     </div>
+    {% if checkins %}
+    <ul class="checkin-list">
+        {% for checkin in checkins %}
+        <li class="checkin-status">
+            <div class="checkin-user-avatar">
+                <img src="{% if checkin.user %}{{ ('/' + checkin.user.avatar) | u_files }}{% else %}{{ '/default.png' | u_files }}{% endif %}" width="50px" height="50px" />
+            </div>
+            <div class="checkin-message">
+                <div class="checkin-meta"><span class="checkin-username">{{ checkin.user.name }}</span>&nbsp;于&nbsp;<span class="date">{{ checkin.timestamp | timeago }}</span></div>
+                <div class="checkin-message-body">
+                    {{ checkin.message }}
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <div class="checkin-nobody">
+        <p>目前还没人在{{ building.name }}签到，<a href="/{{ university.no }}/building/{{ building.id }}/checkin">我来第一个签到！</a></p>
+    </div>
+    {% endif %}
+</div>
+<div class="back-btn">
+    <a class="r btn" href="/{{ university.no }}/building/{{ building.id }}/checkin">签到</a>
+    <a class="r btn btn-gray" href="/{{ university.no }}/buildings/{{ query_date.isoformat() }}/{{ query_class }}">返回</a>
+    <div class="clearfix"></div>
 </div>
 {% endblock %}
