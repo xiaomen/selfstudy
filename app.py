@@ -113,6 +113,7 @@ def templated(template=None):
                 ctx = {}
             elif not isinstance(ctx, dict):
                 return ctx
+            return render_template("mobile/" + template_name, **ctx) 
             ua_string = request.headers.get('User-Agent')
             if not ua_string:
                 return render_template("mobile/" + template_name, **ctx) 
