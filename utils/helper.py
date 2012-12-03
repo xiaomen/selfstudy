@@ -1,18 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import datetime
-from functools import wraps
 
 days = [u'一', u'二', u'三', u'四', u'五', u'六', u'日']
 
-def unicoded(method):
-    @wraps(method)
-    def wrapper(*args, **kwargs):
-        reval = method(*args, **kwargs)
-        if isinstance(reval, str):
-            return reval.decode('utf-8')
-        return reval
-    return wrapper
+def unicoded(src):
+    if isinstance(src, str):
+        return src.decode('utf-8')
+    return src
 
 def str2date(date_str):
     return datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
@@ -60,7 +55,6 @@ def get_week_and_day(date, university):
         return 1, 7
     return 1 + t.days / 7, date.weekday() + 1
 
-@unicoded
 def timeago(time=False):
     """
     Get a datetime object or a int() Epoch timestamp and return a
