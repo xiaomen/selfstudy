@@ -15,7 +15,7 @@ from models import *
 from validate import *
 
 from sheep.api.statics import static_files, \
-        upload_files
+        get_avatar
 from sheep.api.sessions import SessionMiddleware, \
     FilesystemSessionStore
 from sheep.api.users import *
@@ -43,7 +43,7 @@ app.config.update(
 
 app.jinja_env.filters['timeago'] = timeago
 app.jinja_env.filters['s_files'] = static_files
-app.jinja_env.filters['u_files'] = upload_files
+app.jinja_env.filters['u_files'] = get_avatar
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')
 app.jinja_env.globals['generate_user_url'] = generate_user_url
 app.jinja_env.globals['generate_login_url'] = generate_login_url
