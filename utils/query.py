@@ -3,7 +3,7 @@ import json
 from models import *
 
 from sheep.api.cache import cache
-from sheep.api.open import rpc
+from sheep.api.users import get_user
 
 from sqlalchemy import and_
 from sqlalchemy.sql.expression import desc
@@ -96,17 +96,3 @@ def get_checkins_in_building(building_id, limit = 5):
     return CheckIn.query.filter_by(building_id=building_id) \
             .order_by(desc(CheckIn.timestamp)).limit(5).all()
 
-class Obj(object):
-    pass
-
-def get_user(uid):
-    r = rpc('account', 'api/people/{0}'.format(uid))
-    if r.get('status', None) == 'ok':
-        user = Obj()
-        user.uid = r.get('uid', None)
-        user.name = r.get('name', None)
-        user.domain = r.get('domain', None)
-        user.avatar = r.get('avatar', None)
-    else:
-        user = None
-    return user
