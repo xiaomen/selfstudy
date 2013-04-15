@@ -212,7 +212,8 @@
     font-size: 0.85em; 
 }
 
-.checkin-status .checkin-meta .checkin-username {
+.checkin-status .checkin-meta .checkin-username a {
+    text-decoration: none; 
     color: #777; 
 }
 
