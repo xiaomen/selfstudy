@@ -38,7 +38,7 @@
                 <div class="checkin-meta">
                     {% if not (g.current_user and g.current_user.uid == checkin.user.uid) %}
                     <div class="sendmessage r">
-                        <a href="http://xiaomen.co/mail/create/{{ checkin.user | get_user_domain }}/?title=关于你在{{ building.name }}签到的回复">给TA发消息</a>
+                        <a href="http://xiaomen.co/mail/create/{{ checkin.user.uid }}/?title=关于你在{{ building.name }}签到的回复">给TA发消息</a>
                     </div>
                     {% endif %}
                     <span class="checkin-username"><a href="http://xiaomen.co/people/{{ checkin.user | get_user_domain }}/">{{ checkin.user.name | unicoded }}</a></span>&nbsp;于&nbsp;<span class="date">{{ checkin.timestamp | timeago | unicoded }}</span></div>
